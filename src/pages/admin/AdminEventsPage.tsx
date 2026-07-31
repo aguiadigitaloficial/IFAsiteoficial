@@ -1,9 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Edit3, Plus, Search, Star, Trash2, X } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { ImageCropField } from "../../components/ImageCropField";
+import { ImageCropField, type ImageCropFieldHandle } from "../../components/ImageCropField";
 import {
   contentImageUrl,
   deleteEvent,
@@ -59,11 +59,12 @@ export default function AdminEventsPage() {
   const [records, setRecords] = useState<EventRecord[]>([]);
   const [editing, setEditing] = useState<EventRecord | null>(null);
   const [editorOpen, setEditorOpen] = useState(false);
-  const [image, setImage] = useState<Blob | null>(null);
+  const [image, setImage] = useState<Blob | null | undefined>(undefined);
   const [query, setQuery] = useState("");
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const imageFieldRef = useRef<ImageCropFieldHandle>(null);
 
   const {
     register,
@@ -105,7 +106,7 @@ export default function AdminEventsPage() {
 
   const openNew = () => {
     setEditing(null);
-    setImage(null);
+    setImage(undefined);
     reset(emptyEvent);
     setEditorOpen(true);
     setNotice("");
@@ -114,7 +115,7 @@ export default function AdminEventsPage() {
 
   const openEdit = (record: EventRecord) => {
     setEditing(record);
-    setImage(null);
+    setImage(undefined);
     reset({
       title: record.title,
       summary: record.summary,
@@ -135,42 +136,45 @@ export default function AdminEventsPage() {
   };
 
   const closeEditor = () => {
-    if (isDirty && !window.confirm("Descartar as alterações não salvas?")) return;
+    const imageChanged = image !== undefined || Boolean(imageFieldRef.current?.hasPendingCrop());
+    if ((isDirty || imageChanged) && !window.confirm("Descartar as alterações não salvas?")) return;
     setEditorOpen(false);
     setEditing(null);
-    setImage(null);
+    setImage(undefined);
   };
 
   const submit = async (values: EventForm) => {
     setError("");
 
-    const input: EventInput = {
-      slug: editing?.slug || `${slugify(values.title)}-${Date.now().toString(36)}`,
-      title: values.title.trim(),
-      summary: values.summary.trim(),
-      description: values.description.trim(),
-      starts_at: values.starts_at ? new Date(values.starts_at).toISOString() : null,
-      ends_at: values.ends_at ? new Date(values.ends_at).toISOString() : null,
-      venue: values.venue.trim(),
-      city: values.city.trim(),
-      state: values.state.trim().toUpperCase(),
-      external_url: values.external_url.trim(),
-      image_path: editing?.image_path ?? "",
-      image_alt: values.image_alt.trim(),
-      featured: values.featured,
-      status: values.status,
-    };
-
     try {
+      const pendingImage = await imageFieldRef.current?.commitPendingCrop();
+      const imageChange = pendingImage ?? image;
+      const input: EventInput = {
+        slug: editing?.slug || `${slugify(values.title)}-${Date.now().toString(36)}`,
+        title: values.title.trim(),
+        summary: values.summary.trim(),
+        description: values.description.trim(),
+        starts_at: values.starts_at ? new Date(values.starts_at).toISOString() : null,
+        ends_at: values.ends_at ? new Date(values.ends_at).toISOString() : null,
+        venue: values.venue.trim(),
+        city: values.city.trim(),
+        state: values.state.trim().toUpperCase(),
+        external_url: values.external_url.trim(),
+        image_path: imageChange === null ? "" : editing?.image_path ?? "",
+        image_alt: values.image_alt.trim(),
+        featured: values.featured,
+        status: values.status,
+      };
+
       await saveEvent(input, {
         id: editing?.id,
-        image: image ?? undefined,
+        image: imageChange,
         previousImagePath: editing?.image_path,
       });
       setNotice(editing ? "Evento atualizado." : "Evento criado.");
       setEditorOpen(false);
       setEditing(null);
-      setImage(null);
+      setImage(undefined);
       reset(emptyEvent);
       await load();
     } catch (nextError) {
@@ -329,11 +333,13 @@ export default function AdminEventsPage() {
                 <div className="admin-optional-media">
                   <span>Imagem (opcional)</span>
                   <ImageCropField
+                    ref={imageFieldRef}
                     initialUrl={editing?.image_path ? contentImageUrl(editing.image_path) : ""}
                     onChange={setImage}
                   />
                 </div>
               </div>
+              {error && <div className="admin-alert admin-alert-error admin-editor-alert" role="alert">{error}</div>}
               <footer>
                 <button className="admin-button admin-button-secondary" type="button" onClick={closeEditor}>Cancelar</button>
                 <button className="admin-button" type="submit" disabled={isSubmitting}>{isSubmitting ? "Salvando..." : "Salvar evento"}</button>

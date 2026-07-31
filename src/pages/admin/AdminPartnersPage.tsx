@@ -1,9 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { BadgePercent, Edit3, Plus, Search, Star, Trash2, X } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { ImageCropField } from "../../components/ImageCropField";
+import { ImageCropField, type ImageCropFieldHandle } from "../../components/ImageCropField";
 import {
   contentImageUrl,
   deletePartner,
@@ -62,11 +62,12 @@ export default function AdminPartnersPage() {
   const [records, setRecords] = useState<PartnerRecord[]>([]);
   const [editing, setEditing] = useState<PartnerRecord | null>(null);
   const [editorOpen, setEditorOpen] = useState(false);
-  const [image, setImage] = useState<Blob | null>(null);
+  const [image, setImage] = useState<Blob | null | undefined>(undefined);
   const [query, setQuery] = useState("");
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const imageFieldRef = useRef<ImageCropFieldHandle>(null);
 
   const {
     register,
@@ -115,7 +116,7 @@ export default function AdminPartnersPage() {
 
   const openNew = () => {
     setEditing(null);
-    setImage(null);
+    setImage(undefined);
     reset(emptyPartner);
     setEditorOpen(true);
     setNotice("");
@@ -124,7 +125,7 @@ export default function AdminPartnersPage() {
 
   const openEdit = (record: PartnerRecord) => {
     setEditing(record);
-    setImage(null);
+    setImage(undefined);
     reset({
       name: record.name,
       category: record.category,
@@ -146,56 +147,60 @@ export default function AdminPartnersPage() {
   };
 
   const closeEditor = () => {
-    if (isDirty && !window.confirm("Descartar as alterações não salvas?")) return;
+    const imageChanged = image !== undefined || Boolean(imageFieldRef.current?.hasPendingCrop());
+    if ((isDirty || imageChanged) && !window.confirm("Descartar as alterações não salvas?")) return;
     setEditorOpen(false);
     setEditing(null);
-    setImage(null);
+    setImage(undefined);
   };
 
   const submit = async (values: PartnerForm) => {
     setError("");
-    const hasImage = Boolean(image || editing?.image_path);
-    if (
-      values.status === "published" &&
-      (!values.name ||
-        !values.city ||
-        !values.state ||
-        !values.description ||
-        !values.external_url ||
-        !hasImage)
-    ) {
-      setError("Para publicar, informe nome, categoria, cidade, UF, descrição, link e imagem.");
-      return;
-    }
-
-    const input: PartnerInput = {
-      slug: editing?.slug || `${slugify(values.name)}-${Date.now().toString(36)}`,
-      name: values.name.trim(),
-      category: values.category,
-      specialty: values.specialty.trim(),
-      summary: values.summary.trim(),
-      description: values.description.trim(),
-      city: values.city.trim(),
-      state: values.state.trim().toUpperCase(),
-      address: values.address.trim(),
-      external_url: values.external_url.trim(),
-      discount_details: values.discount_details.trim(),
-      image_path: editing?.image_path ?? "",
-      image_alt: values.image_alt.trim(),
-      featured: values.featured,
-      status: values.status,
-    };
 
     try {
+      const pendingImage = await imageFieldRef.current?.commitPendingCrop();
+      const imageChange = pendingImage ?? image;
+      const hasImage = imageChange instanceof Blob || (imageChange !== null && Boolean(editing?.image_path));
+      if (
+        values.status === "published" &&
+        (!values.name ||
+          !values.city ||
+          !values.state ||
+          !values.description ||
+          !values.external_url ||
+          !hasImage)
+      ) {
+        setError("Para publicar, informe nome, categoria, cidade, UF, descrição, link e imagem.");
+        return;
+      }
+
+      const input: PartnerInput = {
+        slug: editing?.slug || `${slugify(values.name)}-${Date.now().toString(36)}`,
+        name: values.name.trim(),
+        category: values.category,
+        specialty: values.specialty.trim(),
+        summary: values.summary.trim(),
+        description: values.description.trim(),
+        city: values.city.trim(),
+        state: values.state.trim().toUpperCase(),
+        address: values.address.trim(),
+        external_url: values.external_url.trim(),
+        discount_details: values.discount_details.trim(),
+        image_path: imageChange === null ? "" : editing?.image_path ?? "",
+        image_alt: values.image_alt.trim(),
+        featured: values.featured,
+        status: values.status,
+      };
+
       await savePartner(input, {
         id: editing?.id,
-        image: image ?? undefined,
+        image: imageChange,
         previousImagePath: editing?.image_path,
       });
       setNotice(editing ? "Parceiro atualizado." : "Parceiro criado.");
       setEditorOpen(false);
       setEditing(null);
-      setImage(null);
+      setImage(undefined);
       reset(emptyPartner);
       await load();
     } catch (nextError) {
@@ -365,10 +370,12 @@ export default function AdminPartnersPage() {
                   </label>
                 </div>
                 <ImageCropField
+                  ref={imageFieldRef}
                   initialUrl={editing?.image_path ? contentImageUrl(editing.image_path) : ""}
                   onChange={setImage}
                 />
               </div>
+              {error && <div className="admin-alert admin-alert-error admin-editor-alert" role="alert">{error}</div>}
               <footer>
                 <button className="admin-button admin-button-secondary" type="button" onClick={closeEditor}>Cancelar</button>
                 <button className="admin-button" type="submit" disabled={isSubmitting}>{isSubmitting ? "Salvando..." : "Salvar parceiro"}</button>

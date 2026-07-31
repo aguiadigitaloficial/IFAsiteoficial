@@ -22,6 +22,7 @@ import {
   MessageCircle,
   MessageSquare,
   Network,
+  Phone,
   Plus,
   Quote,
   RefreshCcw,
@@ -122,6 +123,26 @@ const sections: Section[] = [
 ];
 
 const asset = (name: string) => `/assets/${name}`;
+
+const instagramUrl = "https://www.instagram.com/institutofuturoatipico/?hl=pt-br";
+const phoneUrl = "tel:+5531989620329";
+const whatsappUrl = (message: string) =>
+  `https://wa.me/5531989620329?text=${encodeURIComponent(message)}`;
+
+const whatsappLinks = {
+  general: whatsappUrl(
+    "Olá! Conheci o site do Instituto Futuro Atípico e gostaria de conversar com a equipe.",
+  ),
+  planning: whatsappUrl(
+    "Olá! Gostaria de entender como o IFA pode ajudar no planejamento da minha família.",
+  ),
+  questions: whatsappUrl(
+    "Olá! Visitei o site do Instituto Futuro Atípico e tenho algumas dúvidas. Podem me ajudar?",
+  ),
+  partnership: whatsappUrl(
+    "Olá! Gostaria de ser parceiro(a) do Instituto Futuro Atípico e conhecer os próximos passos.",
+  ),
+};
 
 type HeroTransitionDirection = "forward" | "reverse" | null;
 
@@ -550,6 +571,7 @@ function App() {
           <div className="hero-flow" key="inicio-flow">
             <FirstSection
               areCtasVisible={isHeroCtaVisible}
+              goToAbout={() => goToSection(6)}
               goToNext={() => goToSection(1)}
             />
           </div>
@@ -558,6 +580,7 @@ function App() {
             key="propósito"
             enterImmediately={heroTransitionDirection === "forward"}
             exitImmediately={heroTransitionDirection === "reverse"}
+            goToPlanning={() => goToSection(3)}
             goToNext={() => goToSection(2)}
           />
         ) : activeIndex === 2 ? (
@@ -577,6 +600,7 @@ function App() {
             key="conversa"
             isMobileViewport={isMobileViewport}
             mobilePage={conversationMobilePage}
+            goToPlanning={() => goToSection(3)}
             goToNext={() => navigateByDirection(1)}
           />
         ) : activeIndex === 6 ? (
@@ -603,7 +627,7 @@ function App() {
         ) : activeIndex === 9 ? (
           <ExploreSection key="explore" goToNext={() => goToSection(10)} />
         ) : activeIndex === 10 ? (
-          <FAQSection key="perguntas-frequentes" />
+          <FAQSection key="perguntas-frequentes" goToSection={goToSection} />
         ) : (
           <motion.section
             key={activeSection.id}
@@ -733,9 +757,11 @@ function App() {
 
 function FirstSection({
   areCtasVisible,
+  goToAbout,
   goToNext,
 }: {
   areCtasVisible: boolean;
+  goToAbout: () => void;
   goToNext: () => void;
 }) {
   return (
@@ -751,16 +777,21 @@ function FirstSection({
           className={`hero-actions ${areCtasVisible ? "hero-actions-visible" : "hero-actions-hidden"}`}
           aria-label="Ações principais"
         >
-          <button className="hero-button hero-button-primary" type="button">
+          <button className="hero-button hero-button-primary" type="button" onClick={goToAbout}>
             Conheça o IFA
           </button>
-          <button className="hero-button hero-button-outline" type="button">
+          <a
+            className="hero-button hero-button-outline"
+            href={whatsappLinks.general}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             fale com nossa equipe
-          </button>
+          </a>
         </div>
 
         <button className="hero-mouse" type="button" aria-label="Próxima seção" onClick={goToNext}>
-          <img src={asset("MOUSE.png")} alt="" />
+          <ScrollIndicator tone="light" />
         </button>
       </div>
     </motion.section>
@@ -1031,10 +1062,12 @@ function ScrollIndicator({
 function SecondSection({
   enterImmediately = false,
   exitImmediately = false,
+  goToPlanning,
   goToNext,
 }: {
   enterImmediately?: boolean;
   exitImmediately?: boolean;
+  goToPlanning: () => void;
   goToNext: () => void;
 }) {
   return (
@@ -1082,7 +1115,7 @@ function SecondSection({
                 <strong className="right-orange">previsibilidade</strong> e{" "}
                 <strong className="right-teal">segurança.</strong>
               </p>
-              <button type="button">Entender o planejamento</button>
+              <button type="button" onClick={goToPlanning}>Entender o planejamento</button>
             </div>
           </div>
         </div>
@@ -1691,7 +1724,7 @@ function FeedbackCard({ feedback, variant }: { feedback: Feedback; variant: "mai
   );
 }
 
-function ConversationCopy() {
+function ConversationCopy({ goToPlanning }: { goToPlanning: () => void }) {
   return (
     <div className="conversation-copy">
       <p className="conversation-kicker">CONVERSE COM O IFA</p>
@@ -1715,10 +1748,19 @@ function ConversationCopy() {
         e a segurança de quem mais depende de <strong>você.</strong>
       </p>
 
-      <button className="conversation-button conversation-button-primary" type="button">
+      <a
+        className="conversation-button conversation-button-primary"
+        href={whatsappLinks.planning}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         Fale agora com o IFA
-      </button>
-      <button className="conversation-button conversation-button-outline" type="button">
+      </a>
+      <button
+        className="conversation-button conversation-button-outline"
+        type="button"
+        onClick={goToPlanning}
+      >
         Entender melhor como funciona
       </button>
     </div>
@@ -1770,13 +1812,22 @@ function ConversationCard() {
   );
 }
 
-function ConversationMobileActions() {
+function ConversationMobileActions({ goToPlanning }: { goToPlanning: () => void }) {
   return (
     <div className="conversation-mobile-card-actions">
-      <button className="conversation-button conversation-button-primary" type="button">
+      <a
+        className="conversation-button conversation-button-primary"
+        href={whatsappLinks.planning}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         Fale agora com o IFA
-      </button>
-      <button className="conversation-button conversation-button-outline" type="button">
+      </a>
+      <button
+        className="conversation-button conversation-button-outline"
+        type="button"
+        onClick={goToPlanning}
+      >
         Entender melhor como funciona
       </button>
     </div>
@@ -1784,10 +1835,12 @@ function ConversationMobileActions() {
 }
 
 function FifthSection({
+  goToPlanning,
   goToNext,
   isMobileViewport,
   mobilePage,
 }: {
+  goToPlanning: () => void;
   goToNext: () => void;
   isMobileViewport: boolean;
   mobilePage: 0 | 1;
@@ -1820,7 +1873,7 @@ function FifthSection({
                 exit={{ opacity: 0, y: -18 }}
                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               >
-                <ConversationCopy />
+                <ConversationCopy goToPlanning={goToPlanning} />
                 <button
                   className="fifth-mouse"
                   type="button"
@@ -1840,7 +1893,7 @@ function FifthSection({
                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               >
                 <ConversationCard />
-                <ConversationMobileActions />
+                <ConversationMobileActions goToPlanning={goToPlanning} />
                 <button
                   className="fifth-mouse"
                   type="button"
@@ -1855,7 +1908,7 @@ function FifthSection({
         ) : (
           <>
             <div className="conversation-layout">
-              <ConversationCopy />
+              <ConversationCopy goToPlanning={goToPlanning} />
               <ConversationCard />
             </div>
             <button className="fifth-mouse" type="button" aria-label="Próxima seção" onClick={goToNext}>
@@ -2557,13 +2610,16 @@ function PartnerRightCard({
       <p>
         Preencha o formulário de parceria e conte como você ou sua instituição pode contribuir com essa rede de cuidado.
       </p>
-      <button type="button">
+      <button
+        type="button"
+        onClick={() => window.open(whatsappLinks.partnership, "_blank", "noopener,noreferrer")}
+      >
         Quero ser parceiro
         <img src={asset("LOGO IFA BOTAO.png")} alt="" />
       </button>
       <div className="partner-secure-note">
         <img className="partner-lock" src={asset("cadeado.png")} alt="" />
-        <p>Você será direcionado para um formulário rápido e seguro.</p>
+        <p>Você será direcionado ao WhatsApp do IFA para iniciar a parceria.</p>
       </div>
     </motion.article>
   );
@@ -2826,7 +2882,8 @@ const faqItems = [
   },
 ];
 
-function FAQSection() {
+function FAQSection({ goToSection }: { goToSection: (index: number) => void }) {
+  const navigate = useNavigate();
   const [openItems, setOpenItems] = useState<number[]>([]);
 
   const toggleItem = (index: number) => {
@@ -2902,35 +2959,55 @@ function FAQSection() {
               <img src={asset("logo rodape.png")} alt="Instituto Futuro Atípico" />
               <p>Proteção financeira, orientação e acolhimento para famílias atípicas.</p>
               <div className="footer-socials" aria-label="Canais sociais">
-                <button type="button" aria-label="Instagram">
+                <button
+                  type="button"
+                  onClick={() => window.open(instagramUrl, "_blank", "noopener,noreferrer")}
+                  aria-label="Instagram"
+                >
                   <Instagram />
                 </button>
-                <button type="button" aria-label="Mensagem">
+                <button
+                  type="button"
+                  onClick={() => window.open(whatsappLinks.general, "_blank", "noopener,noreferrer")}
+                  aria-label="WhatsApp"
+                >
                   <MessageSquare />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    window.location.href = phoneUrl;
+                  }}
+                  aria-label="Ligar para o IFA"
+                >
+                  <Phone />
                 </button>
               </div>
             </div>
 
             <nav className="footer-links" aria-label="Links rápidos">
               <h2>Links rápidos</h2>
-              <button type="button">Início</button>
-              <button type="button">Dores e rotina</button>
-              <button type="button">Hub de soluções</button>
-              <button type="button">Histórias atendidas</button>
-              <button type="button">Quem somos</button>
-              <button type="button">Seja parceiro</button>
+              <button type="button" onClick={() => goToSection(0)}>Início</button>
+              <button type="button" onClick={() => goToSection(2)}>Dores e rotina</button>
+              <button type="button" onClick={() => goToSection(3)}>Hub de soluções</button>
+              <button type="button" onClick={() => goToSection(4)}>Histórias atendidas</button>
+              <button type="button" onClick={() => goToSection(6)}>Quem somos</button>
+              <button type="button" onClick={() => goToSection(8)}>Seja parceiro</button>
             </nav>
 
             <nav className="footer-links" aria-label="Páginas">
               <h2>Páginas</h2>
-              <button type="button">Rede de parceiros</button>
-              <button type="button">Calendário de eventos</button>
+              <button type="button" onClick={() => navigate("/parceiros")}>Rede de parceiros</button>
+              <button type="button" onClick={() => navigate("/eventos")}>Calendário de eventos</button>
             </nav>
 
             <div className="footer-cta">
               <h2>Ainda tem dúvidas?</h2>
               <p>Fale com o IFA e entenda como começar essa conversa com clareza e acolhimento.</p>
-              <button type="button">
+              <button
+                type="button"
+                onClick={() => window.open(whatsappLinks.questions, "_blank", "noopener,noreferrer")}
+              >
                 Fale com o IFA
                 <ArrowRight />
               </button>

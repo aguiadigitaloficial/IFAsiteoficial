@@ -1,21 +1,24 @@
-import { useEffect, useState } from "react";
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from "react";
 import Cropper, { type Area, type Point } from "react-easy-crop";
 import { ImagePlus, RotateCcw, X } from "lucide-react";
 import { cropToWebp } from "../lib/cropImage";
 
-export function ImageCropField({
-  initialUrl,
-  onChange,
-}: {
+export type ImageCropFieldHandle = {
+  commitPendingCrop: () => Promise<Blob | undefined>;
+  hasPendingCrop: () => boolean;
+};
+
+export const ImageCropField = forwardRef<ImageCropFieldHandle, {
   initialUrl?: string;
   onChange: (blob: Blob | null) => void;
-}) {
+}>(function ImageCropField({ initialUrl, onChange }, ref) {
   const [source, setSource] = useState("");
   const [preview, setPreview] = useState(initialUrl ?? "");
   const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [pixels, setPixels] = useState<Area | null>(null);
   const [processing, setProcessing] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     setPreview(initialUrl ?? "");
@@ -35,25 +38,48 @@ export function ImageCropField({
       window.alert("Use uma imagem JPEG, PNG ou WebP.");
       return;
     }
+    if (file.size > 10 * 1024 * 1024) {
+      window.alert("A imagem deve ter no máximo 10 MB.");
+      return;
+    }
     const nextSource = URL.createObjectURL(file);
+    setError("");
     setSource(nextSource);
     setCrop({ x: 0, y: 0 });
     setZoom(1);
   };
 
-  const applyCrop = async () => {
-    if (!source || !pixels) return;
+  const applyCrop = useCallback(async () => {
+    if (!source) return undefined;
+    if (!pixels) {
+      const message = "Aguarde a imagem carregar antes de salvar.";
+      setError(message);
+      throw new Error(message);
+    }
     setProcessing(true);
+    setError("");
     try {
       const blob = await cropToWebp(source, pixels);
       const nextPreview = URL.createObjectURL(blob);
       setPreview(nextPreview);
       setSource("");
       onChange(blob);
+      return blob;
+    } catch (nextError) {
+      const message = nextError instanceof Error
+        ? nextError.message
+        : "Não foi possível preparar a imagem.";
+      setError(message);
+      throw nextError;
     } finally {
       setProcessing(false);
     }
-  };
+  }, [onChange, pixels, source]);
+
+  useImperativeHandle(ref, () => ({
+    commitPendingCrop: applyCrop,
+    hasPendingCrop: () => Boolean(source),
+  }), [applyCrop, source]);
 
   return (
     <div className="image-field">
@@ -100,19 +126,30 @@ export function ImageCropField({
             type="file"
             accept="image/jpeg,image/png,image/webp"
             hidden
-            onChange={(event) => chooseFile(event.target.files?.[0])}
+            onChange={(event) => {
+              chooseFile(event.target.files?.[0]);
+              event.currentTarget.value = "";
+            }}
           />
         </label>
         {source && (
           <>
-            <button className="admin-button" type="button" disabled={processing} onClick={applyCrop}>
+            <button
+              className="admin-button"
+              type="button"
+              disabled={processing}
+              onClick={() => void applyCrop().catch(() => undefined)}
+            >
               {processing ? "Processando..." : "Aplicar recorte"}
             </button>
             <button
               className="admin-icon-button"
               type="button"
               title="Cancelar recorte"
-              onClick={() => setSource("")}
+              onClick={() => {
+                setSource("");
+                setError("");
+              }}
             >
               <X />
             </button>
@@ -122,9 +159,10 @@ export function ImageCropField({
           <button
             className="admin-icon-button"
             type="button"
-            title="Trocar imagem"
+            title="Remover imagem"
             onClick={() => {
               setPreview("");
+              setError("");
               onChange(null);
             }}
           >
@@ -132,6 +170,7 @@ export function ImageCropField({
           </button>
         )}
       </div>
+      {error && <p className="image-field-error" role="alert">{error}</p>}
     </div>
   );
-}
+});

@@ -95,14 +95,18 @@ export async function removeContentImage(path: string) {
 
 export async function saveEvent(
   input: EventInput,
-  options: { id?: string; image?: Blob; previousImagePath?: string } = {},
+  options: { id?: string; image?: Blob | null; previousImagePath?: string } = {},
 ) {
   const client = requireClient();
   const id = options.id ?? crypto.randomUUID();
   let imagePath = input.image_path;
+  let uploadedImagePath = "";
 
-  if (options.image) {
+  if (options.image instanceof Blob) {
     imagePath = await uploadContentImage("events", id, options.image);
+    uploadedImagePath = imagePath;
+  } else if (options.image === null) {
+    imagePath = "";
   }
 
   const payload = { ...input, id, image_path: imagePath };
@@ -111,10 +115,15 @@ export async function saveEvent(
     .upsert(payload)
     .select()
     .single();
-  normalizeError(error, "Não foi possível salvar o evento.");
+  if (error) {
+    if (uploadedImagePath) {
+      await client.storage.from("ifa-content").remove([uploadedImagePath]);
+    }
+    normalizeError(error, "Não foi possível salvar o evento.");
+  }
 
   if (
-    options.image &&
+    options.image !== undefined &&
     options.previousImagePath &&
     options.previousImagePath !== imagePath
   ) {
@@ -126,14 +135,18 @@ export async function saveEvent(
 
 export async function savePartner(
   input: PartnerInput,
-  options: { id?: string; image?: Blob; previousImagePath?: string } = {},
+  options: { id?: string; image?: Blob | null; previousImagePath?: string } = {},
 ) {
   const client = requireClient();
   const id = options.id ?? crypto.randomUUID();
   let imagePath = input.image_path;
+  let uploadedImagePath = "";
 
-  if (options.image) {
+  if (options.image instanceof Blob) {
     imagePath = await uploadContentImage("partners", id, options.image);
+    uploadedImagePath = imagePath;
+  } else if (options.image === null) {
+    imagePath = "";
   }
 
   const payload = { ...input, id, image_path: imagePath };
@@ -142,10 +155,15 @@ export async function savePartner(
     .upsert(payload)
     .select()
     .single();
-  normalizeError(error, "Não foi possível salvar o parceiro.");
+  if (error) {
+    if (uploadedImagePath) {
+      await client.storage.from("ifa-content").remove([uploadedImagePath]);
+    }
+    normalizeError(error, "Não foi possível salvar o parceiro.");
+  }
 
   if (
-    options.image &&
+    options.image !== undefined &&
     options.previousImagePath &&
     options.previousImagePath !== imagePath
   ) {

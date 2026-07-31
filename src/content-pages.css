@@ -1004,6 +1004,10 @@
   border-top: 1px solid #e0e7ea;
 }
 
+.admin-editor-alert {
+  margin: 18px 0 0;
+}
+
 .image-field {
   min-width: 0;
 }
@@ -1055,6 +1059,14 @@
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 12px;
+}
+
+.image-field-error {
+  margin: 10px 0 0;
+  color: #852f2f;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
 }
 
 .admin-auth-screen {
