@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type * as React from "react";
 import { AnimatePresence, motion, useReducedMotion, type Variants } from "framer-motion";
 import gsap from "gsap";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { WhiteLogoMark } from "./components/WhiteLogoMark";
 import {
   ArrowRight,
@@ -699,7 +699,29 @@ function App() {
                 ))}
               </div>
 
-              <p className="mobile-menu-footer">Selecione uma seção para continuar.</p>
+              <nav className="mobile-menu-shortcuts" aria-label="Acessos rápidos">
+                <span className="mobile-menu-shortcuts-label">Acessos rápidos</span>
+                <div className="mobile-menu-shortcuts-grid">
+                  <Link
+                    className="mobile-menu-shortcut mobile-menu-shortcut-events"
+                    to="/eventos"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    <CalendarDays aria-hidden="true" />
+                    <span>Eventos</span>
+                    <ArrowRight aria-hidden="true" />
+                  </Link>
+                  <Link
+                    className="mobile-menu-shortcut mobile-menu-shortcut-partners"
+                    to="/parceiros"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    <Network aria-hidden="true" />
+                    <span>Parceiros</span>
+                    <ArrowRight aria-hidden="true" />
+                  </Link>
+                </div>
+              </nav>
             </motion.nav>
           </>
         )}
