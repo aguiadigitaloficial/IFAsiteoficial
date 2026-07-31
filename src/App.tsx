@@ -33,6 +33,7 @@ import {
   TriangleAlert,
   UsersRound,
 } from "lucide-react";
+import "./styles.css";
 
 type Section = {
   id: string;
@@ -571,7 +572,7 @@ function App() {
           <div className="hero-flow" key="inicio-flow">
             <FirstSection
               areCtasVisible={isHeroCtaVisible}
-              goToAbout={() => goToSection(6)}
+              goToAbout={() => goToSection(1)}
               goToNext={() => goToSection(1)}
             />
           </div>
@@ -767,12 +768,25 @@ function FirstSection({
   return (
     <motion.section
       className="hero-section"
-      initial={{ opacity: 0, filter: "blur(4px)" }}
-      animate={{ opacity: 1, filter: "blur(0px)" }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       transition={{ duration: 0.72, ease: [0.22, 1, 0.36, 1] }}
     >
       <div className="hero-stage">
-        <img className="hero-background" src={asset("FUNDO.png")} alt="" />
+        <h1 className="sr-only">Instituto Futuro Atípico: planejamento e proteção para famílias atípicas</h1>
+        <picture>
+          <source srcSet={asset("optimized/hero-background.avif")} type="image/avif" />
+          <source srcSet={asset("optimized/hero-background.webp")} type="image/webp" />
+          <img
+            className="hero-background"
+            src={asset("FUNDO.png")}
+            alt=""
+            width="1440"
+            height="900"
+            fetchPriority="high"
+            decoding="async"
+          />
+        </picture>
         <div
           className={`hero-actions ${areCtasVisible ? "hero-actions-visible" : "hero-actions-hidden"}`}
           aria-label="Ações principais"
@@ -1017,7 +1031,7 @@ function HeroLogoController({
 function LightSectionBackground({ className = "" }: { className?: string }) {
   return (
     <div className={`light-section-background ${className}`.trim()} aria-hidden="true">
-      <img className="light-section-background-base" src={asset("fundo pc.jpg.jpeg")} alt="" />
+      <img className="light-section-background-base" src={asset("optimized/light-background.webp")} alt="" width="1440" height="900" decoding="async" />
       <div className="light-section-background-corners">
         <img className="light-section-corner light-section-corner-red" src={asset("vermelho.svg")} alt="" />
         <img className="light-section-corner light-section-corner-teal" src={asset("azul claro.svg")} alt="" />
@@ -1086,7 +1100,7 @@ function SecondSection({
       <div className="second-stage">
         <LightSectionBackground className="second-light-background" />
         <div className="second-main">
-          <img className="family-photo" src={asset("FOTO FAMILIA.png")} alt="Família sorrindo" />
+          <img className="family-photo" src={asset("optimized/family-photo.webp")} alt="Família sorrindo" width="1000" height="542" decoding="async" />
 
           <div className="second-content">
             <div className="second-copy-left">
@@ -1098,10 +1112,10 @@ function SecondSection({
               </h1>
               <div className="left-support">
                 <div className="family-avatars" aria-hidden="true">
-                  <img src={asset("foto1.png")} alt="" />
-                  <img src={asset("foto2.png")} alt="" />
-                  <img src={asset("foto3.png")} alt="" />
-                  <img src={asset("foto4.png")} alt="" />
+                  <img src={asset("optimized/family-thumb-1.webp")} alt="" width="256" height="256" loading="lazy" decoding="async" />
+                  <img src={asset("optimized/family-thumb-2.webp")} alt="" width="256" height="256" loading="lazy" decoding="async" />
+                  <img src={asset("optimized/family-thumb-3.webp")} alt="" width="256" height="256" loading="lazy" decoding="async" />
+                  <img src={asset("optimized/family-thumb-4.webp")} alt="" width="256" height="256" loading="lazy" decoding="async" />
                 </div>
                 <p>Cada vez mais famílias estão escolhendo planejar o futuro com antecedência.</p>
               </div>
@@ -2310,7 +2324,7 @@ function FoundersPhoto({
       initial="hidden"
       animate="visible"
     >
-      <img src={asset("SOCIOS.jpeg")} alt="Equipe fundadora do IFA" />
+      <img src={asset("optimized/founders.webp")} alt="Equipe fundadora do IFA" width="1280" height="854" loading="lazy" decoding="async" />
       <figcaption>Equipe fundadora do IFA</figcaption>
     </motion.figure>
   );
@@ -2543,8 +2557,12 @@ function PartnerWoman({
   return (
     <motion.img
       className="partner-woman"
-      src={asset("MULHER IFA.png")}
+      src={asset("optimized/woman-ifa.webp")}
       alt="Representante IFA"
+      width="360"
+      height="450"
+      loading="lazy"
+      decoding="async"
       custom={{ delay, reducedMotion, y: 18 } satisfies GuidedRevealCustom}
       variants={guidedRevealVariants}
       initial="hidden"
@@ -3017,7 +3035,10 @@ function FAQSection({ goToSection }: { goToSection: (index: number) => void }) {
           <div className="footer-bottom">
             <p>© 2026 Instituto Futuro Atípico. Todos os direitos reservados.</p>
             <p>
-              Desenvolvido por <strong>Águia Digital</strong>
+              Desenvolvido por{" "}
+              <a href="https://aguiadigital.com/" target="_blank" rel="noopener noreferrer">
+                Águia Digital
+              </a>
             </p>
           </div>
         </footer>

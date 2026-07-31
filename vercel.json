@@ -1,5 +1,27 @@
 {
+  "headers": [
+    {
+      "source": "/admin",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" }
+      ]
+    },
+    {
+      "source": "/admin/(.*)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" }
+      ]
+    }
+  ],
   "rewrites": [
+    {
+      "source": "/eventos",
+      "destination": "/eventos/index.html"
+    },
+    {
+      "source": "/parceiros",
+      "destination": "/parceiros/index.html"
+    },
     {
       "source": "/(.*)",
       "destination": "/index.html"

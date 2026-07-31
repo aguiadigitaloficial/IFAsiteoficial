@@ -1084,7 +1084,7 @@
   place-items: center;
   background:
     linear-gradient(rgba(255, 255, 255, 0.93), rgba(255, 255, 255, 0.93)),
-    url("/assets/fundo pc.jpg.jpeg") center / cover;
+    url("/assets/optimized/light-background.webp") center / cover;
 }
 
 .admin-login section {

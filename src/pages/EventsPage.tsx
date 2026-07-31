@@ -120,7 +120,7 @@ export default function EventsPage() {
                 <article className="event-card" key={event.id}>
                   <div className="event-card-media">
                     {image ? (
-                      <img src={image} alt={event.image_alt || event.title} />
+                      <img src={image} alt={event.image_alt || event.title} loading="lazy" decoding="async" />
                     ) : (
                       <CalendarDays aria-hidden="true" />
                     )}

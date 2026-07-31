@@ -1,0 +1,24 @@
+{
+  "siteUrl": "https://www.institutofuturoatipico.com.br",
+  "siteName": "Instituto Futuro Atípico",
+  "socialImage": "/assets/ifa-social.webp",
+  "instagram": "https://www.instagram.com/institutofuturoatipico/?hl=pt-br",
+  "phone": "+5531989620329",
+  "routes": {
+    "/": {
+      "title": "Instituto Futuro Atípico | Planejamento Familiar",
+      "heading": "Instituto Futuro Atípico: planejamento e proteção para famílias atípicas",
+      "description": "Planejamento, proteção financeira e uma rede de confiança para famílias atípicas construírem a continuidade do cuidado com segurança."
+    },
+    "/eventos": {
+      "title": "Eventos para Famílias Atípicas | Instituto Futuro Atípico",
+      "heading": "Eventos do Instituto Futuro Atípico para famílias atípicas",
+      "description": "Consulte palestras, encontros e ações do Instituto Futuro Atípico para informar, acolher e conectar famílias atípicas."
+    },
+    "/parceiros": {
+      "title": "Rede de Parceiros | Instituto Futuro Atípico",
+      "heading": "Rede de parceiros do Instituto Futuro Atípico",
+      "description": "Conheça profissionais, institutos e estabelecimentos parceiros comprometidos com o cuidado e a segurança de famílias atípicas."
+    }
+  }
+}

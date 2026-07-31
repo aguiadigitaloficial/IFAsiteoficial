@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { ArrowLeft, Menu, X } from "lucide-react";
+import "../content-pages.css";
 
 export function PublicPageShell({
   children,
@@ -18,7 +19,7 @@ export function PublicPageShell({
   return (
     <div className="content-page">
       <div className="content-background" aria-hidden="true">
-        <img className="content-background-base" src="/assets/fundo pc.jpg.jpeg" alt="" />
+        <img className="content-background-base" src="/assets/optimized/light-background.webp" alt="" width="1440" height="900" decoding="async" />
         <img className="content-corner content-corner-red" src="/assets/vermelho.svg" alt="" />
         <img className="content-corner content-corner-teal" src="/assets/azul claro.svg" alt="" />
         <img className="content-corner content-corner-blue" src="/assets/azul escuro.svg" alt="" />
@@ -27,7 +28,7 @@ export function PublicPageShell({
 
       <header className="content-navbar">
         <Link to="/" className="content-brand" aria-label="Voltar ao Instituto Futuro Atípico">
-          <img src="/assets/LOGO IFA COLORIDA COMPLETA.png" alt="Instituto Futuro Atípico" />
+          <img src="/assets/LOGO IFA COLORIDA COMPLETA.png" alt="Instituto Futuro Atípico" width="194" height="70" />
         </Link>
         <button
           className="content-menu-button"

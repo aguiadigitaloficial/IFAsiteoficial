@@ -126,7 +126,7 @@ export default function PartnersPage() {
                 <article className="partner-card" key={partner.id}>
                   <div className="partner-card-media">
                     {image ? (
-                      <img src={image} alt={partner.image_alt || partner.name} />
+                      <img src={image} alt={partner.image_alt || partner.name} loading="lazy" decoding="async" />
                     ) : (
                       <UsersRound aria-hidden="true" />
                     )}
