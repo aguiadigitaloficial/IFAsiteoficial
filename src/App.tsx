@@ -919,7 +919,7 @@ function MobileContinuousFlow({
         }
 
         const nextIndex = Number(current.dataset.mobileSectionIndex);
-        if (Number.isFinite(nextIndex) && nextIndex !== activeIndex) {
+        if (Number.isFinite(nextIndex)) {
           onActiveIndexChange(nextIndex);
         }
       },
@@ -931,7 +931,7 @@ function MobileContinuousFlow({
 
     blocks.forEach((block) => observer.observe(block));
     return () => observer.disconnect();
-  }, [activeIndex, onActiveIndexChange]);
+  }, [onActiveIndexChange]);
 
   return (
     <motion.div
@@ -962,6 +962,7 @@ function MobileContinuousFlow({
         <MobileFlowBlock id="mobile-historias" sectionIndex={4}>
           <StoriesSection
             isSectionActive={activeIndex === 4}
+            mobileFlow
             goToNext={() => scrollToBlock("mobile-conversa-copy")}
           />
         </MobileFlowBlock>
@@ -1958,9 +1959,11 @@ const feedbacks: Feedback[] = [
 function StoriesSection({
   goToNext,
   isSectionActive = true,
+  mobileFlow = false,
 }: {
   goToNext: () => void;
   isSectionActive?: boolean;
+  mobileFlow?: boolean;
 }) {
   const [activeFeedback, setActiveFeedback] = useState(0);
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
@@ -2049,8 +2052,18 @@ function StoriesSection({
             }}
           >
             <AnimatePresence mode="popLayout" initial={false}>
-              <FeedbackCard key={`main-${activeFeedback}`} feedback={feedbacks[activeFeedback]} variant="main" />
-              <FeedbackCard key={`preview-${nextFeedback}`} feedback={feedbacks[nextFeedback]} variant="preview" />
+              <FeedbackCard
+                key={mobileFlow ? "mobile-main" : `main-${activeFeedback}`}
+                feedback={feedbacks[activeFeedback]}
+                variant="main"
+              />
+              {!mobileFlow && (
+                <FeedbackCard
+                  key={`preview-${nextFeedback}`}
+                  feedback={feedbacks[nextFeedback]}
+                  variant="preview"
+                />
+              )}
             </AnimatePresence>
           </motion.div>
         </motion.div>
@@ -2208,11 +2221,8 @@ function ConversationCard() {
       <footer className="conversation-card-footer">
         <span className="conversation-card-dot" aria-hidden="true" />
         <p>
-          Você não precisa chegar com tudo pronto.
-          <br />{" "}
-          O papel do IFA é ajudar sua família a organizar
-          <br />{" "}
-          o que hoje parece difícil de enxergar.
+          Você não precisa chegar com tudo pronto. O papel do IFA é ajudar sua família a
+          organizar o que hoje parece difícil de enxergar.
         </p>
       </footer>
     </article>

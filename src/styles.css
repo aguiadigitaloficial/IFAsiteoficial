@@ -8012,8 +8012,10 @@ button {
   }
 
   .conversation-card-footer p {
-    font-size: clamp(11px, 0.82vw, 16px);
-    line-height: 1.65;
+    max-width: none;
+    font-size: clamp(11px, 0.68vw, 13px);
+    line-height: 1.55;
+    text-wrap: pretty;
   }
 }
 
@@ -10758,10 +10760,11 @@ button {
     min-height: 100%;
     overflow-x: hidden !important;
     overflow-y: auto !important;
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
   }
 
   body.mobile-free-scroll {
+    -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
     overscroll-behavior-y: auto;
   }
@@ -11451,11 +11454,17 @@ button {
     inset: auto;
     width: min(90vw, 520px);
     height: auto;
+    min-height: clamp(390px, 108vw, 440px);
     margin: 0 auto;
+    overflow-anchor: none;
   }
 
   #mobile-historias .feedback-carousel-shell {
     margin-top: 26px;
+  }
+
+  #mobile-historias {
+    overflow-anchor: none;
   }
 
   #mobile-historias .feedback-card-main {
@@ -11463,21 +11472,37 @@ button {
     inset: auto;
     width: 100%;
     height: auto;
-    min-height: 0;
+    min-height: clamp(390px, 108vw, 440px);
     padding: 20px;
     overflow: visible;
+    touch-action: pan-y;
   }
 
   #mobile-historias .feedback-person strong {
-    font-size: 16px;
+    font-size: clamp(14px, 3.8vw, 15px);
   }
 
   #mobile-historias .feedback-person span,
-  #mobile-historias .feedback-tag,
   #mobile-historias .feedback-card footer span {
     height: auto;
     min-height: 24px;
     font-size: 13px;
+  }
+
+  #mobile-historias .feedback-card header {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 10px;
+  }
+
+  #mobile-historias .feedback-tag {
+    width: auto;
+    min-width: 0;
+    min-height: 28px;
+    height: 28px;
+    padding: 0 10px;
+    font-size: clamp(9.5px, 2.7vw, 11px);
+    font-weight: 600;
+    line-height: 1;
   }
 
   #mobile-historias .feedback-quote p {
