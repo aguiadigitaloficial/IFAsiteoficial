@@ -2034,14 +2034,14 @@ function StoriesSection({
         >
           <motion.div
             className="feedback-carousel-track"
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.12}
-            onPointerDown={() => setIsCarouselPaused(true)}
-            onPointerUp={() => setIsCarouselPaused(false)}
-            onPointerCancel={() => setIsCarouselPaused(false)}
-            onPointerLeave={() => setIsCarouselPaused(false)}
-            onDragEnd={(_, info) => {
+            drag={mobileFlow ? false : "x"}
+            dragConstraints={mobileFlow ? undefined : { left: 0, right: 0 }}
+            dragElastic={mobileFlow ? 0 : 0.12}
+            onPointerDown={mobileFlow ? undefined : () => setIsCarouselPaused(true)}
+            onPointerUp={mobileFlow ? undefined : () => setIsCarouselPaused(false)}
+            onPointerCancel={mobileFlow ? undefined : () => setIsCarouselPaused(false)}
+            onPointerLeave={mobileFlow ? undefined : () => setIsCarouselPaused(false)}
+            onDragEnd={mobileFlow ? undefined : (_, info) => {
               setIsCarouselPaused(false);
               if (info.offset.x < -70) {
                 goToFeedback(1);
