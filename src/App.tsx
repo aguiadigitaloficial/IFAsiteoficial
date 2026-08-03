@@ -1,9 +1,15 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type * as React from "react";
 import { AnimatePresence, motion, useReducedMotion, type Variants } from "framer-motion";
 import gsap from "gsap";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { SiteNavbar } from "./components/SiteNavbar";
 import { WhiteLogoMark } from "./components/WhiteLogoMark";
+import {
+  mobileSectionTargets,
+  sectionIndexFromHash,
+  siteSections,
+} from "./site-navigation";
 import {
   ArrowRight,
   BadgeDollarSign,
@@ -35,107 +41,7 @@ import {
 } from "lucide-react";
 import "./styles.css";
 
-type Section = {
-  id: string;
-  eyebrow: string;
-  title: string;
-  copy: string;
-  tone: "dark" | "light";
-};
-
-const sections: Section[] = [
-  {
-    id: "inicio",
-    eyebrow: "Instituto Futuro Atípico",
-    title: "Futuro Atípico",
-    copy: "Uma experiência digital leve, precisa e fiel ao design original.",
-    tone: "dark",
-  },
-  {
-    id: "propósito",
-    eyebrow: "Propósito",
-    title: "Cada seção entra com calma.",
-    copy: "O scroll conduz a navegação entre telas completas, com transições sutis e foco no conteúdo.",
-    tone: "light",
-  },
-  {
-    id: "jornada",
-    eyebrow: "Jornada",
-    title: "Movimento suave, sem pressa.",
-    copy: "A estrutura já está pronta para receber as composições exatas dos prints do Figma.",
-    tone: "dark",
-  },
-  {
-    id: "contato",
-    eyebrow: "Contato",
-    title: "Uma landing page completa.",
-    copy: "React, TypeScript, Tailwind e Vite configurados para evoluir até a versão final.",
-    tone: "light",
-  },
-  {
-    id: "histórias",
-    eyebrow: "Histórias atendidas",
-    title: "Relatos que mostram cuidado, segurança e planejamento.",
-    copy: "Exemplos reais de preocupação transformada em planejamento.",
-    tone: "light",
-  },
-  {
-    id: "conversa",
-    eyebrow: "Converse com o IFA",
-    title: "O futuro não precisa depender do improviso.",
-    copy: "Uma conversa consultiva para entender a realidade da família.",
-    tone: "dark",
-  },
-  {
-    id: "quem-somos",
-    eyebrow: "Quem somos",
-    title: "O Instituto Futuro Atípico nasceu de uma pergunta simples.",
-    copy: "Quem cuida do futuro de quem dedica a vida a cuidar?",
-    tone: "light",
-  },
-  {
-    id: "quem-construiu",
-    eyebrow: "Quem construiu esse projeto",
-    title: "Três trajetórias diferentes, um mesmo propósito.",
-    copy: "O IFA reúne profissionais de áreas complementares.",
-    tone: "light",
-  },
-  {
-    id: "parceiro",
-    eyebrow: "Seja um parceiro",
-    title: "Faça parte da rede que apoia famílias atípicas com responsabilidade.",
-    copy: "Amplie o acesso à informação, planejamento e proteção financeira familiar.",
-    tone: "light",
-  },
-  {
-    id: "explore",
-    eyebrow: "Explore o IFA",
-    title: "Continue sua jornada pelo Instituto.",
-    copy: "Encontre parceiros e acompanhe os próximos eventos do IFA.",
-    tone: "dark",
-  },
-  {
-    id: "perguntas-frequentes",
-    eyebrow: "Perguntas frequentes",
-    title: "Dúvidas comuns antes de começar.",
-    copy: "Respostas para entender melhor como o IFA trabalha.",
-    tone: "dark",
-  },
-];
-
-const mobileSectionTargets: Record<number, string> = {
-  0: "mobile-proposito",
-  1: "mobile-proposito",
-  2: "mobile-jornada",
-  3: "mobile-continuidade",
-  4: "mobile-historias",
-  5: "mobile-conversa-copy",
-  6: "mobile-quem-somos-overview",
-  7: "mobile-fundadores-photo",
-  8: "mobile-parceiro-intro",
-  9: "mobile-explore",
-  10: "mobile-faq",
-};
+const sections = siteSections;
 
 const asset = (name: string) => `/assets/${name}`;
 
@@ -162,7 +68,8 @@ const whatsappLinks = {
 type HeroTransitionDirection = "forward" | "reverse" | null;
 
 function App() {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const initialSectionIndexRef = useRef(sectionIndexFromHash(window.location.hash));
+  const [activeIndex, setActiveIndex] = useState(() => initialSectionIndexRef.current ?? 0);
   const [heroTransitionDirection, setHeroTransitionDirection] = useState<HeroTransitionDirection>(null);
   const [isHeroCtaVisible, setIsHeroCtaVisible] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -170,7 +77,9 @@ function App() {
   const [whoMobilePage, setWhoMobilePage] = useState<0 | 1>(0);
   const [foundersMobilePage, setFoundersMobilePage] = useState<0 | 1>(0);
   const [partnerMobilePage, setPartnerMobilePage] = useState<0 | 1>(0);
-  const [mobileIntroComplete, setMobileIntroComplete] = useState(false);
+  const [mobileIntroComplete, setMobileIntroComplete] = useState(
+    () => (initialSectionIndexRef.current ?? 0) > 0,
+  );
   const [isMobileViewport, setIsMobileViewport] = useState(
     () => window.matchMedia("(max-width: 760px)").matches,
   );
@@ -181,7 +90,7 @@ function App() {
   const activeSection = sections[activeIndex];
   const isHeroTransitioning = heroTransitionDirection !== null;
   const isMobileFreeFlow =
-    isMobileViewport && mobileIntroComplete && activeIndex > 0 && !isHeroTransitioning;
+    isMobileViewport && mobileIntroComplete && activeIndex > 0;
 
   const scrollToMobileSection = (index: number, behavior: "auto" | "smooth" = "smooth") => {
     const targetId = mobileSectionTargets[Math.max(index, 1)];
@@ -190,20 +99,27 @@ function App() {
     target?.scrollIntoView({ behavior, block: "start" });
   };
 
-  useEffect(() => {
-    if (!menuOpen) {
+  useLayoutEffect(() => {
+    const initialSectionIndex = initialSectionIndexRef.current;
+
+    if (initialSectionIndex === null || initialSectionIndex <= 0) {
+      initialSectionIndexRef.current = null;
       return;
     }
 
-    const closeMenuWithEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setMenuOpen(false);
-      }
-    };
+    if (isMobileViewport) {
+      if (!isMobileFreeFlow) return;
 
-    window.addEventListener("keydown", closeMenuWithEscape);
-    return () => window.removeEventListener("keydown", closeMenuWithEscape);
-  }, [menuOpen]);
+      const frame = window.requestAnimationFrame(() => {
+        scrollToMobileSection(initialSectionIndex, "auto");
+        initialSectionIndexRef.current = null;
+      });
+
+      return () => window.cancelAnimationFrame(frame);
+    }
+
+    initialSectionIndexRef.current = null;
+  }, [isMobileFreeFlow, isMobileViewport]);
 
   const goToSection = (index: number) => {
     const requestedIndex = Math.min(Math.max(index, 0), sections.length - 1);
@@ -577,7 +493,6 @@ function App() {
     setHeroTransitionDirection(null);
 
     if (direction === "forward" && isMobileViewport) {
-      setMobileIntroComplete(true);
       window.requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: "auto" }));
     }
 
@@ -587,7 +502,8 @@ function App() {
   };
 
   const isDarkInternalSection = activeIndex === 5 || activeIndex === 9 || activeIndex === 10;
-  const showPersistentLogo = activeIndex > 0 && heroTransitionDirection === null;
+  const showPersistentLogo = activeIndex > 0
+    && (heroTransitionDirection === null || (isMobileViewport && mobileIntroComplete));
   const persistentLogoSrc = asset(
     isMobileViewport
       ? "LOGO IFA COLORIDA COMPLETA.png"
@@ -596,34 +512,32 @@ function App() {
       : "LOGO IFA COLORIDA COMPLETA.png",
   );
 
-  const navItems = useMemo(
-    () =>
-      sections.map((section, index) => (
-        <button
-          key={section.id}
-          className={`nav-dot ${index === activeIndex ? "nav-dot-active" : ""}`}
-          type="button"
-          aria-label={`Ir para ${section.eyebrow}`}
-          onClick={() => {
-            setMenuOpen(false);
-            if (index === 5) {
-              setConversationMobilePage(0);
-            }
-            if (index === 6) {
-              setWhoMobilePage(0);
-            }
-            if (index === 7) {
-              setFoundersMobilePage(0);
-            }
-            if (index === 8) {
-              setPartnerMobilePage(0);
-            }
-            goToSection(index);
-          }}
-        />
-      )),
-    [activeIndex, heroTransitionDirection, isMobileFreeFlow, isMobileViewport],
-  );
+  const selectNavigationSection = (index: number) => {
+    setMenuOpen(false);
+
+    if (index === 0 && isMobileFreeFlow) {
+      window.location.replace("/#inicio");
+      window.location.reload();
+      return;
+    }
+
+    if (index === 5) setConversationMobilePage(0);
+    if (index === 6) setWhoMobilePage(0);
+    if (index === 7) setFoundersMobilePage(0);
+    if (index === 8) setPartnerMobilePage(0);
+
+    goToSection(index);
+  };
+
+  const navItems = sections.map((section, index) => (
+    <button
+      key={section.id}
+      className={`nav-dot ${index === activeIndex ? "nav-dot-active" : ""}`}
+      type="button"
+      aria-label={`Ir para ${section.eyebrow}`}
+      onClick={() => selectNavigationSection(index)}
+    />
+  ));
 
   return (
     <main
@@ -631,28 +545,15 @@ function App() {
         isMobileFreeFlow ? "site-shell-mobile-flow" : ""
       }`}
     >
-      <header className="site-header" aria-label="Menu principal">
-        <img
-          className={`site-header-logo ${showPersistentLogo ? "site-header-logo-visible" : ""}`}
-          src={persistentLogoSrc}
-          alt="Instituto Futuro Atípico"
-          aria-hidden={!showPersistentLogo}
-        />
-        <button
-          className={`menu-button ${menuOpen ? "menu-button-open" : ""}`}
-          type="button"
-          aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
-          aria-expanded={menuOpen}
-          aria-controls="site-navigation-menu"
-          onClick={() => setMenuOpen((current) => !current)}
-        >
-          <span className="menu-icon" aria-hidden="true">
-            <span />
-            <span />
-            <span />
-          </span>
-        </button>
-      </header>
+      <SiteNavbar
+        activeSectionIndex={activeIndex}
+        flowHeader={isMobileFreeFlow}
+        logoSrc={persistentLogoSrc}
+        logoVisible={showPersistentLogo}
+        menuOpen={menuOpen}
+        onMenuOpenChange={setMenuOpen}
+        onSectionSelect={selectNavigationSection}
+      />
 
       <AnimatePresence mode="wait">
         {isMobileFreeFlow ? (
@@ -742,109 +643,19 @@ function App() {
       <HeroLogoController
         direction={heroTransitionDirection}
         isHeroActive={activeIndex === 0}
-        onCovered={(direction) => setActiveIndex(direction === "forward" ? 1 : 0)}
+        onCovered={(direction) => {
+          setActiveIndex(direction === "forward" ? 1 : 0);
+
+          if (direction === "forward" && isMobileViewport) {
+            setMobileIntroComplete(true);
+          }
+        }}
         onComplete={completeHeroTransition}
       />
 
       <aside className="section-nav" aria-label="Navegação entre seções">
         {navItems}
       </aside>
-
-      <AnimatePresence>
-        {menuOpen && (
-          <>
-            <motion.button
-              key="menu-backdrop"
-              className="mobile-menu-backdrop"
-              type="button"
-              aria-label="Fechar menu"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.24 }}
-              onClick={() => setMenuOpen(false)}
-            />
-            <motion.nav
-              key="menu-panel"
-              id="site-navigation-menu"
-              className="mobile-menu"
-              aria-label="Navegação principal"
-              initial={{ opacity: 0, x: 18, scale: 0.985 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: 14, scale: 0.99 }}
-              transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <header className="mobile-menu-heading">
-                <div>
-                  <span className="mobile-menu-kicker">Navegação</span>
-                  <h2>Explore o Instituto</h2>
-                </div>
-                <span className="mobile-menu-progress" aria-label={`Seção ${activeIndex + 1} de ${sections.length}`}>
-                  {String(activeIndex + 1).padStart(2, "0")}
-                  <small>/ {String(sections.length).padStart(2, "0")}</small>
-                </span>
-              </header>
-
-              <div className="mobile-menu-list">
-                {sections.map((section, index) => (
-                  <button
-                    key={section.id}
-                    className={`mobile-menu-item mobile-menu-accent-${index % 4} ${
-                      index === activeIndex ? "mobile-menu-item-active" : ""
-                    }`}
-                    type="button"
-                    aria-current={index === activeIndex ? "page" : undefined}
-                    onClick={() => {
-                      setMenuOpen(false);
-                      if (index === 5) {
-                        setConversationMobilePage(0);
-                      }
-                      if (index === 6) {
-                        setWhoMobilePage(0);
-                      }
-                      if (index === 7) {
-                        setFoundersMobilePage(0);
-                      }
-                      if (index === 8) {
-                        setPartnerMobilePage(0);
-                      }
-                      goToSection(index);
-                    }}
-                  >
-                    <span className="mobile-menu-index">{String(index + 1).padStart(2, "0")}</span>
-                    <span className="mobile-menu-label">{section.eyebrow}</span>
-                    <ArrowRight className="mobile-menu-arrow" aria-hidden="true" />
-                  </button>
-                ))}
-              </div>
-
-              <nav className="mobile-menu-shortcuts" aria-label="Acessos rápidos">
-                <span className="mobile-menu-shortcuts-label">Acessos rápidos</span>
-                <div className="mobile-menu-shortcuts-grid">
-                  <Link
-                    className="mobile-menu-shortcut mobile-menu-shortcut-events"
-                    to="/eventos"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    <CalendarDays aria-hidden="true" />
-                    <span>Eventos</span>
-                    <ArrowRight aria-hidden="true" />
-                  </Link>
-                  <Link
-                    className="mobile-menu-shortcut mobile-menu-shortcut-partners"
-                    to="/parceiros"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    <Network aria-hidden="true" />
-                    <span>Parceiros</span>
-                    <ArrowRight aria-hidden="true" />
-                  </Link>
-                </div>
-              </nav>
-            </motion.nav>
-          </>
-        )}
-      </AnimatePresence>
 
     </main>
   );
@@ -963,6 +774,116 @@ function MobileContinuousFlow({
   };
 
   useEffect(() => {
+    const imageSources = [
+      asset("optimized/family-photo.webp"),
+      asset("optimized/family-thumb-1.webp"),
+      asset("optimized/family-thumb-2.webp"),
+      asset("optimized/family-thumb-3.webp"),
+      asset("optimized/family-thumb-4.webp"),
+      asset("optimized/founders.webp"),
+      asset("optimized/woman-ifa.webp"),
+    ];
+
+    imageSources.forEach((src) => {
+      const image = new Image();
+      image.decoding = "async";
+      image.src = src;
+    });
+  }, []);
+
+  useEffect(() => {
+    const flow = flowRef.current;
+
+    if (!flow) return;
+
+    const revealSelector = [
+      ".family-photo",
+      ".second-copy-left > h1",
+      ".second-copy-right > p",
+      ".second-copy-right > button",
+      ".left-support",
+      ".third-heading-block",
+      ".method-kicker",
+      ".method-title",
+      ".method-intro",
+      ".method-statement",
+      ".stories-heading",
+      ".feedback-carousel-shell",
+      ".feedback-dots",
+      ".conversation-copy",
+      ".conversation-card",
+      ".who-heading",
+      ".who-info-card",
+      ".who-right-block > h2",
+      ".who-right-block > p",
+      ".who-feature-card",
+      ".who-mini-card",
+      ".founders-heading",
+      ".founders-photo",
+      ".founder-card",
+      ".founders-footer-card",
+      ".partner-heading",
+      ".partner-woman",
+      ".partner-left-card",
+      ".partner-right-card",
+      ".explore-heading",
+      ".explore-option",
+      ".faq-heading",
+      ".faq-item",
+      ".site-footer",
+    ].join(",");
+    const elements = Array.from(flow.querySelectorAll<HTMLElement>(revealSelector));
+    elements.forEach((element) => {
+      element.classList.add("mobile-scroll-reveal");
+    });
+
+    const blocks = new Map<Element, HTMLElement[]>();
+    elements.forEach((element) => {
+      const block = element.closest(".mobile-flow-block") ?? flow;
+      const blockElements = blocks.get(block) ?? [];
+      blockElements.push(element);
+      blocks.set(block, blockElements);
+    });
+
+    blocks.forEach((blockElements) => {
+      blockElements
+        .sort((left, right) => {
+          const leftRect = left.getBoundingClientRect();
+          const rightRect = right.getBoundingClientRect();
+          const verticalDifference = leftRect.top - rightRect.top;
+          return Math.abs(verticalDifference) > 4
+            ? verticalDifference
+            : leftRect.left - rightRect.left;
+        })
+        .forEach((element, order) => {
+          element.style.setProperty("--mobile-reveal-delay", `${Math.min(order * 70, 210)}ms`);
+        });
+    });
+
+    if (reducedMotion || !("IntersectionObserver" in window)) {
+      elements.forEach((element) => element.classList.add("mobile-scroll-reveal-visible"));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("mobile-scroll-reveal-visible");
+          observer.unobserve(entry.target);
+        });
+      },
+      {
+        rootMargin: "0px 0px -26% 0px",
+        threshold: 0.12,
+      },
+    );
+
+    elements.forEach((element) => observer.observe(element));
+    return () => observer.disconnect();
+  }, [reducedMotion]);
+
+  useEffect(() => {
     const flow = flowRef.current;
 
     if (!flow) {
@@ -1016,7 +937,7 @@ function MobileContinuousFlow({
     <motion.div
       ref={flowRef}
       className="mobile-continuous-flow"
-      initial={{ opacity: 0 }}
+      initial={false}
       animate={{ opacity: 1 }}
       transition={{ duration: reducedMotion ? 0.12 : 0.42, ease: [0.22, 1, 0.36, 1] }}
     >
@@ -1479,7 +1400,22 @@ function SecondSection({
       <div className="second-stage">
         <LightSectionBackground className="second-light-background" />
         <div className="second-main">
-          <img className="family-photo" src={asset("optimized/family-photo.webp")} alt="Família sorrindo" width="1000" height="542" decoding="async" />
+          <img
+            className="family-photo"
+            src={asset("optimized/family-photo.webp")}
+            alt="Família sorrindo"
+            width="1000"
+            height="542"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            onError={(event) => {
+              const image = event.currentTarget;
+              if (image.dataset.fallbackApplied) return;
+              image.dataset.fallbackApplied = "true";
+              image.src = asset("FOTO FAMILIA.png");
+            }}
+          />
 
           <div className="second-content">
             <div className="second-copy-left">
@@ -1491,10 +1427,23 @@ function SecondSection({
               </h1>
               <div className="left-support">
                 <div className="family-avatars" aria-hidden="true">
-                  <img src={asset("optimized/family-thumb-1.webp")} alt="" width="256" height="256" loading="lazy" decoding="async" />
-                  <img src={asset("optimized/family-thumb-2.webp")} alt="" width="256" height="256" loading="lazy" decoding="async" />
-                  <img src={asset("optimized/family-thumb-3.webp")} alt="" width="256" height="256" loading="lazy" decoding="async" />
-                  <img src={asset("optimized/family-thumb-4.webp")} alt="" width="256" height="256" loading="lazy" decoding="async" />
+                  {[1, 2, 3, 4].map((index) => (
+                    <img
+                      key={index}
+                      src={asset(`optimized/family-thumb-${index}.webp`)}
+                      alt=""
+                      width="256"
+                      height="256"
+                      loading="eager"
+                      decoding="async"
+                      onError={(event) => {
+                        const image = event.currentTarget;
+                        if (image.dataset.fallbackApplied) return;
+                        image.dataset.fallbackApplied = "true";
+                        image.src = asset(`foto${index}.png`);
+                      }}
+                    />
+                  ))}
                 </div>
                 <p>Cada vez mais famílias estão escolhendo planejar o futuro com antecedência.</p>
               </div>
@@ -1522,6 +1471,7 @@ function SecondSection({
 }
 
 function ThirdSection({ goToNext }: { goToNext: () => void }) {
+  const timelineRef = useRef<HTMLDivElement>(null);
   const concerns = [
     {
       id: "rotina",
@@ -1565,6 +1515,34 @@ function ThirdSection({ goToNext }: { goToNext: () => void }) {
     },
   ] as const;
 
+  useEffect(() => {
+    const timeline = timelineRef.current;
+
+    if (!timeline) return;
+
+    const showTimeline = () => timeline.classList.add("timeline-area-visible");
+
+    if (
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      !("IntersectionObserver" in window)
+    ) {
+      showTimeline();
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        showTimeline();
+        observer.disconnect();
+      },
+      { rootMargin: "0px 0px -12% 0px", threshold: 0.12 },
+    );
+
+    observer.observe(timeline);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <motion.section
       className="third-section"
@@ -1599,7 +1577,7 @@ function ThirdSection({ goToNext }: { goToNext: () => void }) {
           </p>
         </div>
 
-        <div className="timeline-area" aria-label="Preocupações frequentes">
+        <div ref={timelineRef} className="timeline-area" aria-label="Preocupações frequentes">
           <div className="timeline-track">
             <img className="timeline-road" src={asset("estrada.svg")} alt="" aria-hidden="true" />
 
@@ -1697,6 +1675,7 @@ function FourthSection({ goToNext }: { goToNext: () => void }) {
       return;
     }
 
+    let observer: IntersectionObserver | undefined;
     const ctx = gsap.context(() => {
       const pieces = [orange, red, teal, blue];
       const joints = [orangeJoint, blueJoint];
@@ -1738,7 +1717,10 @@ function FourthSection({ goToNext }: { goToNext: () => void }) {
         });
       });
 
-      const timeline = gsap.timeline({ defaults: { overwrite: "auto" } });
+      const timeline = gsap.timeline({
+        paused: true,
+        defaults: { overwrite: "auto" },
+      });
 
       timeline.to(center, {
         autoAlpha: 1,
@@ -1773,9 +1755,28 @@ function FourthSection({ goToNext }: { goToNext: () => void }) {
         duration: 0.18,
         ease: "power3.out",
       }, 1.19);
+
+      if (!isMobile || !("IntersectionObserver" in window)) {
+        timeline.play(0);
+        return;
+      }
+
+      observer = new IntersectionObserver(
+        (entries) => {
+          if (!entries.some((entry) => entry.isIntersecting)) return;
+          timeline.play(0);
+          observer?.disconnect();
+        },
+        { rootMargin: "0px 0px -10% 0px", threshold: 0.12 },
+      );
+
+      observer.observe(puzzle);
     }, puzzle);
 
-    return () => ctx.revert();
+    return () => {
+      observer?.disconnect();
+      ctx.revert();
+    };
   }, []);
 
   return (
@@ -1802,9 +1803,11 @@ function FourthSection({ goToNext }: { goToNext: () => void }) {
 
         <p className="method-intro">
           Uma metodologia estruturada para <strong>compreender</strong> a realidade da
-          <br />
+          {" "}
+          <br />{" "}
           <strong>sua família</strong>, organizar prioridades e construir um planejamento
-          <br />
+          {" "}
+          <br />{" "}
           personalizado para a continuidade do <strong>cuidado.</strong>
         </p>
 
@@ -1812,7 +1815,8 @@ function FourthSection({ goToNext }: { goToNext: () => void }) {
           Cada <strong className="teal">família</strong> possui uma história{" "}
           <strong className="orange">única.</strong> Por isso, nosso método{" "}
           <strong className="blue">respeita</strong>
-          <br />
+          {" "}
+          <br />{" "}
           sua realidade e conduz o planejamento em etapas claras e personalizadas.
         </p>
 
@@ -2403,13 +2407,15 @@ function WhoHeading({
       <h1>
         O Instituto <span className="orange">Futuro</span>{" "}
         <span className="teal">Atípico</span> nasceu
-        <br />
+        {" "}
+        <br />{" "}
         de uma pergunta simples.
       </h1>
       <h2>Quem cuida do futuro de quem dedica a vida a cuidar?</h2>
       <p className="who-intro">
         O IFA nasceu da escuta de pais e mães de crianças atípicas e da
-        <br />
+        {" "}
+        <br />{" "}
         necessidade de transformar uma preocupação silenciosa em planejamento concreto.
       </p>
     </motion.div>
@@ -2685,13 +2691,16 @@ function FoundersHeading({
       <p>QUEM CONSTRUIU ESSE PROJETO</p>
       <h1>
         Três trajetórias diferentes,
-        <br />
+        {" "}
+        <br />{" "}
         um <span className="orange">mesmo</span> <span className="teal">propósito.</span>
       </h1>
       <p className="founders-copy">
         O IFA reúne profissionais de áreas complementares para ajudar
-        <br />
+        {" "}
+        <br />{" "}
         famílias atípicas a protegerem aquilo que têm de mais importante:
+        {" "}
         <br />a continuidade do cuidado.
       </p>
     </motion.div>
@@ -2713,7 +2722,20 @@ function FoundersPhoto({
       initial="hidden"
       animate="visible"
     >
-      <img src={asset("optimized/founders.webp")} alt="Equipe fundadora do IFA" width="1280" height="854" loading="lazy" decoding="async" />
+      <img
+        src={asset("optimized/founders.webp")}
+        alt="Equipe fundadora do IFA"
+        width="1280"
+        height="854"
+        loading="lazy"
+        decoding="async"
+        onError={(event) => {
+          const image = event.currentTarget;
+          if (image.dataset.fallbackApplied) return;
+          image.dataset.fallbackApplied = "true";
+          image.src = asset("SOCIOS.jpeg");
+        }}
+      />
       <figcaption>Equipe fundadora do IFA</figcaption>
     </motion.figure>
   );
@@ -2952,6 +2974,12 @@ function PartnerWoman({
       height="450"
       loading="lazy"
       decoding="async"
+      onError={(event) => {
+        const image = event.currentTarget;
+        if (image.dataset.fallbackApplied) return;
+        image.dataset.fallbackApplied = "true";
+        image.src = asset("MULHER IFA.png");
+      }}
       custom={{ delay, reducedMotion, y: 18 } satisfies GuidedRevealCustom}
       variants={guidedRevealVariants}
       initial="hidden"

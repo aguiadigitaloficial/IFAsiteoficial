@@ -76,7 +76,7 @@ export default function EventsPage() {
       title="Encontros que informam, acolhem e conectam."
       description="Consulte palestras, encontros e ações voltadas para famílias atípicas."
     >
-      <section className="content-tools" aria-label="Filtros de eventos">
+      <section className="content-tools event-tools" aria-label="Filtros de eventos">
         <label className="content-search">
           <Search aria-hidden="true" />
           <input

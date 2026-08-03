@@ -1,6 +1,8 @@
 import { useState, type ReactNode } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { ArrowLeft, Menu, X } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+import { sectionHref } from "../site-navigation";
+import { SiteNavbar } from "./SiteNavbar";
 import "../content-pages.css";
 
 export function PublicPageShell({
@@ -15,6 +17,7 @@ export function PublicPageShell({
   description: string;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="content-page">
@@ -26,33 +29,12 @@ export function PublicPageShell({
         <img className="content-corner content-corner-orange" src="/assets/laranja.svg" alt="" />
       </div>
 
-      <header className="content-navbar">
-        <Link to="/" className="content-brand" aria-label="Voltar ao Instituto Futuro Atípico">
-          <img src="/assets/LOGO IFA COLORIDA COMPLETA.png" alt="Instituto Futuro Atípico" width="194" height="70" />
-        </Link>
-        <button
-          className="content-menu-button"
-          type="button"
-          aria-label={menuOpen ? "Fechar navegação" : "Abrir navegação"}
-          aria-expanded={menuOpen}
-          onClick={() => setMenuOpen((current) => !current)}
-        >
-          {menuOpen ? <X /> : <Menu />}
-        </button>
-        {menuOpen && (
-          <nav className="content-menu" aria-label="Navegação principal">
-            <NavLink to="/" onClick={() => setMenuOpen(false)}>
-              Início
-            </NavLink>
-            <NavLink to="/eventos" onClick={() => setMenuOpen(false)}>
-              Eventos
-            </NavLink>
-            <NavLink to="/parceiros" onClick={() => setMenuOpen(false)}>
-              Parceiros
-            </NavLink>
-          </nav>
-        )}
-      </header>
+      <SiteNavbar
+        logoToHome
+        menuOpen={menuOpen}
+        onMenuOpenChange={setMenuOpen}
+        onSectionSelect={(index) => navigate(sectionHref(index))}
+      />
 
       <main className="content-main">
         <Link className="content-back" to="/">

@@ -52,123 +52,6 @@ button {
   display: none;
 }
 
-.site-header {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  z-index: 40;
-  width: 100%;
-  height: 0;
-  pointer-events: none;
-}
-
-.site-header-logo {
-  position: fixed;
-  top: clamp(36px, 5.2631579svh, 50px);
-  left: 6.25vw;
-  display: block;
-  width: clamp(150px, 10.1041667vw, 194px);
-  height: auto;
-  opacity: 0;
-  visibility: hidden;
-  object-fit: contain;
-  pointer-events: none;
-  transition:
-    opacity 240ms cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0s linear 240ms;
-}
-
-.site-header-logo-visible {
-  opacity: 1;
-  visibility: visible;
-  transition-delay: 0s;
-}
-
-.menu-button {
-  position: fixed;
-  top: clamp(36px, 5.2631579svh, 50px);
-  right: 6.25vw;
-  display: grid;
-  width: clamp(56px, 3.6458333vw, 70px);
-  height: clamp(56px, 3.6458333vw, 70px);
-  place-items: center;
-  border: 1px solid rgba(77, 105, 126, 0.38);
-  border-radius: 999px;
-  color: #0d8f8f;
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow:
-    0 8px 20px rgba(4, 39, 71, 0.13),
-    0 2px 5px rgba(4, 39, 71, 0.08);
-  cursor: pointer;
-  pointer-events: auto;
-  transition:
-    border-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
-    background-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.menu-icon {
-  position: relative;
-  display: block;
-  width: 42%;
-  height: 31%;
-}
-
-.menu-icon span {
-  position: absolute;
-  left: 0;
-  display: block;
-  width: 100%;
-  height: 3px;
-  border-radius: 999px;
-  background: currentColor;
-  transform-origin: center;
-  transition:
-    top 240ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 180ms ease,
-    transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.menu-icon span:nth-child(1) {
-  top: 0;
-}
-
-.menu-icon span:nth-child(2) {
-  top: calc(50% - 1.5px);
-}
-
-.menu-icon span:nth-child(3) {
-  top: calc(100% - 3px);
-}
-
-.menu-button-open .menu-icon span:nth-child(1) {
-  top: calc(50% - 1.5px);
-  transform: rotate(45deg);
-}
-
-.menu-button-open .menu-icon span:nth-child(2) {
-  opacity: 0;
-}
-
-.menu-button-open .menu-icon span:nth-child(3) {
-  top: calc(50% - 1.5px);
-  transform: rotate(-45deg);
-}
-
-.menu-button:hover {
-  border-color: rgba(13, 143, 143, 0.62);
-  background: #ffffff;
-  box-shadow:
-    0 11px 24px rgba(4, 39, 71, 0.17),
-    0 3px 7px rgba(4, 39, 71, 0.1);
-}
-
-.menu-button:focus-visible {
-  outline: 3px solid rgba(13, 143, 143, 0.28);
-  outline-offset: 4px;
-}
-
 .hero-section {
   position: absolute;
   inset: 0;
@@ -3810,229 +3693,6 @@ button {
   transform: scale(1.35);
 }
 
-.mobile-menu-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 38;
-  border: 0;
-  padding: 0;
-  background: rgba(4, 39, 71, 0.2);
-  cursor: default;
-  backdrop-filter: blur(3px);
-}
-
-.mobile-menu {
-  --menu-accent: #0d8f8f;
-  position: fixed;
-  top: clamp(104px, 13svh, 128px);
-  right: 6.25vw;
-  z-index: 39;
-  display: grid;
-  width: clamp(330px, 24vw, 400px);
-  max-height: calc(100svh - clamp(126px, 16svh, 154px));
-  grid-template-rows: auto minmax(0, 1fr) auto;
-  gap: 14px;
-  overflow: hidden;
-  border: 1px solid rgba(13, 143, 143, 0.28);
-  border-radius: 12px;
-  padding: 18px;
-  color: #042747;
-  background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.99), rgba(244, 250, 249, 0.97));
-  box-shadow:
-    0 24px 60px rgba(4, 39, 71, 0.24),
-    0 5px 14px rgba(4, 39, 71, 0.11),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
-}
-
-.mobile-menu-heading {
-  display: flex;
-  min-width: 0;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 18px;
-  border-bottom: 1px solid rgba(4, 39, 71, 0.11);
-  padding: 2px 2px 14px;
-}
-
-.mobile-menu-kicker {
-  display: block;
-  margin-bottom: 4px;
-  color: #0d8f8f;
-  font-family: "Inter", sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 1.2;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-}
-
-.mobile-menu-heading h2 {
-  margin: 0;
-  color: #042747;
-  font-family: "Poppins", sans-serif;
-  font-size: clamp(20px, 1.3vw, 24px);
-  font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: 0;
-}
-
-.mobile-menu-progress {
-  flex: 0 0 auto;
-  color: #0d8f8f;
-  font-family: "Poppins", sans-serif;
-  font-size: 21px;
-  font-weight: 600;
-  line-height: 1;
-}
-
-.mobile-menu-progress small {
-  color: rgba(4, 39, 71, 0.46);
-  font-size: 11px;
-  font-weight: 500;
-}
-
-.mobile-menu-list {
-  display: grid;
-  min-height: 0;
-  gap: 6px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  padding-right: 4px;
-  scrollbar-color: rgba(13, 143, 143, 0.48) transparent;
-  scrollbar-width: thin;
-}
-
-.mobile-menu-list::-webkit-scrollbar {
-  width: 5px;
-}
-
-.mobile-menu-list::-webkit-scrollbar-thumb {
-  border-radius: 999px;
-  background: rgba(13, 143, 143, 0.46);
-}
-
-.mobile-menu-item {
-  --nav-accent: #0d8f8f;
-  position: relative;
-  display: grid;
-  width: 100%;
-  min-width: 0;
-  min-height: 48px;
-  grid-template-columns: 34px minmax(0, 1fr) 18px;
-  align-items: center;
-  gap: 10px;
-  overflow: hidden;
-  border: 1px solid rgba(4, 39, 71, 0.09);
-  border-radius: 7px;
-  padding: 7px 11px 7px 9px;
-  color: #042747;
-  background: rgba(255, 255, 255, 0.7);
-  text-align: left;
-  cursor: pointer;
-  transition:
-    border-color 180ms ease,
-    background-color 180ms ease,
-    box-shadow 180ms ease;
-}
-
-.mobile-menu-item::before {
-  position: absolute;
-  top: 8px;
-  bottom: 8px;
-  left: 0;
-  width: 3px;
-  border-radius: 0 999px 999px 0;
-  background: var(--nav-accent);
-  content: "";
-  opacity: 0;
-  transition: opacity 180ms ease;
-}
-
-.mobile-menu-accent-0 {
-  --nav-accent: #0d8f8f;
-}
-
-.mobile-menu-accent-1 {
-  --nav-accent: #0d4c87;
-}
-
-.mobile-menu-accent-2 {
-  --nav-accent: #f78000;
-}
-
-.mobile-menu-accent-3 {
-  --nav-accent: #b53c3c;
-}
-
-.mobile-menu-index {
-  display: grid;
-  width: 30px;
-  height: 30px;
-  place-items: center;
-  border: 1px solid color-mix(in srgb, var(--nav-accent) 42%, transparent);
-  border-radius: 999px;
-  color: var(--nav-accent);
-  background: color-mix(in srgb, var(--nav-accent) 9%, white);
-  font-family: "Inter", sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.mobile-menu-label {
-  min-width: 0;
-  color: inherit;
-  font-family: "Inter", sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1.25;
-}
-
-.mobile-menu-arrow {
-  width: 16px;
-  height: 16px;
-  color: var(--nav-accent);
-  opacity: 0.48;
-  transition: opacity 180ms ease;
-}
-
-.mobile-menu-item:hover,
-.mobile-menu-item:focus-visible,
-.mobile-menu-item-active {
-  border-color: color-mix(in srgb, var(--nav-accent) 34%, transparent);
-  background: color-mix(in srgb, var(--nav-accent) 7%, white);
-  box-shadow: 0 5px 14px rgba(4, 39, 71, 0.07);
-}
-
-.mobile-menu-item:hover::before,
-.mobile-menu-item:focus-visible::before,
-.mobile-menu-item-active::before {
-  opacity: 1;
-}
-
-.mobile-menu-item:hover .mobile-menu-arrow,
-.mobile-menu-item:focus-visible .mobile-menu-arrow,
-.mobile-menu-item-active .mobile-menu-arrow {
-  opacity: 1;
-}
-
-.mobile-menu-item:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--nav-accent) 34%, transparent);
-  outline-offset: -2px;
-}
-
-.mobile-menu-item-active .mobile-menu-label {
-  color: var(--nav-accent);
-}
-
-.mobile-menu-shortcuts {
-  display: grid;
-  gap: 7px;
-  border-top: 1px solid rgba(4, 39, 71, 0.11);
-  padding-top: 11px;
-}
-
 .footer-bottom a {
   color: #ffffff;
   font-weight: 700;
@@ -4055,78 +3715,6 @@ button {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
-}
-
-.mobile-menu-shortcuts-label {
-  color: rgba(4, 39, 71, 0.58);
-  font-family: "Inter", sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  line-height: 1.2;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.mobile-menu-shortcuts-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 7px;
-}
-
-.mobile-menu-shortcut {
-  --shortcut-accent: #0d8f8f;
-  display: grid;
-  min-width: 0;
-  min-height: 44px;
-  grid-template-columns: 20px minmax(0, 1fr) 14px;
-  align-items: center;
-  gap: 7px;
-  border: 1px solid color-mix(in srgb, var(--shortcut-accent) 28%, transparent);
-  border-radius: 7px;
-  padding: 8px 9px;
-  color: #042747;
-  background: color-mix(in srgb, var(--shortcut-accent) 7%, white);
-  font-family: "Inter", sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 1.2;
-  text-decoration: none;
-  transition:
-    border-color 180ms ease,
-    background-color 180ms ease,
-    box-shadow 180ms ease;
-}
-
-.mobile-menu-shortcut-events {
-  --shortcut-accent: #f78000;
-}
-
-.mobile-menu-shortcut-partners {
-  --shortcut-accent: #0d8f8f;
-}
-
-.mobile-menu-shortcut svg {
-  width: 17px;
-  height: 17px;
-  color: var(--shortcut-accent);
-}
-
-.mobile-menu-shortcut svg:last-child {
-  width: 14px;
-  height: 14px;
-  opacity: 0.56;
-}
-
-.mobile-menu-shortcut:hover,
-.mobile-menu-shortcut:focus-visible {
-  border-color: color-mix(in srgb, var(--shortcut-accent) 48%, transparent);
-  background: color-mix(in srgb, var(--shortcut-accent) 12%, white);
-  box-shadow: 0 5px 14px rgba(4, 39, 71, 0.08);
-}
-
-.mobile-menu-shortcut:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--shortcut-accent) 38%, transparent);
-  outline-offset: 2px;
 }
 
 @media (min-width: 761px) and (max-width: 1180px) {
@@ -4386,13 +3974,6 @@ button {
 }
 
 @media (max-width: 760px) {
-  .site-header {
-    top: 24px;
-    right: 24px;
-    width: 54px;
-    height: 54px;
-  }
-
   .hero-stage {
     width: 100vw;
     height: 100svh;
@@ -5967,17 +5548,6 @@ button {
 }
 
 @media (min-width: 901px) and (max-width: 1180px) {
-  .site-header {
-    top: 6.3157895svh;
-    right: 6.25vw;
-    width: clamp(54px, 5.7vw, 70px);
-    height: clamp(54px, 5.7vw, 70px);
-  }
-
-  .site-header-light {
-    top: 5.2631579svh;
-  }
-
   .second-logo {
     top: 5.2631579%;
     left: 6.25%;
@@ -6050,17 +5620,6 @@ button {
 }
 
 @media (min-width: 641px) and (max-width: 900px) {
-  .site-header {
-    top: 6.3157895svh;
-    right: 6.25vw;
-    width: clamp(54px, 7vw, 62px);
-    height: clamp(54px, 7vw, 62px);
-  }
-
-  .site-header-light {
-    top: 5.2631579svh;
-  }
-
   .second-logo {
     top: 5.2631579% !important;
     left: 6.25% !important;
@@ -11112,22 +10671,6 @@ button {
   }
 }
 
-/* Persistent navigation: one stable logo and menu control across every section. */
-.site-shell .site-header {
-  top: 0;
-  right: 0;
-  left: 0;
-  width: 100%;
-  height: 0;
-}
-
-.site-shell .mobile-menu {
-  top: clamp(104px, 13svh, 128px);
-  right: 6.25vw;
-  left: auto;
-  z-index: 39;
-}
-
 /* Let the Explore destinations use the outer hub area instead of leaving a wide gutter. */
 .explore-card {
   gap: clamp(14px, 1vw, 20px);
@@ -11135,31 +10678,6 @@ button {
 }
 
 @media (min-width: 761px) and (max-width: 1180px) {
-  .site-shell .site-header {
-    top: 0;
-    right: 0;
-    left: 0;
-    width: 100%;
-    height: 0;
-  }
-
-  .site-header-logo {
-    top: clamp(32px, 5.2631579svh, 50px);
-    left: 6.25vw;
-    width: clamp(150px, 15vw, 194px);
-  }
-
-  .site-shell .menu-button {
-    top: clamp(32px, 5.2631579svh, 50px);
-    right: 6.25vw;
-    width: clamp(54px, 5.7vw, 70px);
-    height: clamp(54px, 5.7vw, 70px);
-  }
-
-  .site-shell .mobile-menu {
-    top: clamp(98px, 13svh, 120px);
-  }
-
   .explore-card {
     gap: clamp(10px, 1.25vw, 15px);
     padding: clamp(8px, 1vw, 12px);
@@ -11211,159 +10729,14 @@ button {
 }
 
 @media (max-width: 760px) {
-  .site-shell .site-header {
-    top: 0;
-    right: 0;
-    left: 0;
-    width: 100%;
-    height: 0;
-  }
-
-  .site-header-logo {
-    top: 20px;
-    left: 20px;
-    width: 132px;
-  }
-
-  .site-shell .menu-button {
-    top: 20px;
-    right: 20px;
-    width: 54px;
-    height: 54px;
-  }
-
-  .site-shell .mobile-menu {
-    top: 84px;
-    right: 16px;
-    left: auto;
-    width: min(390px, calc(100vw - 32px));
-    max-height: calc(100svh - 100px);
-    gap: 10px;
-    padding: 14px;
-  }
-
-  .mobile-menu-heading {
-    gap: 12px;
-    padding-bottom: 11px;
-  }
-
-  .mobile-menu-heading h2 {
-    font-size: clamp(18px, 5.3vw, 21px);
-  }
-
-  .mobile-menu-progress {
-    font-size: 19px;
-  }
-
-  .mobile-menu-list {
-    gap: 5px;
-  }
-
-  .mobile-menu-item {
-    min-height: 44px;
-    grid-template-columns: 31px minmax(0, 1fr) 16px;
-    gap: 9px;
-    padding-block: 6px;
-  }
-
-  .mobile-menu-index {
-    width: 28px;
-    height: 28px;
-  }
-
-  .mobile-menu-label {
-    font-size: 13px;
-  }
-
-  .mobile-menu-shortcuts {
-    gap: 6px;
-    padding-top: 9px;
-  }
-
-  .mobile-menu-shortcut {
-    min-height: 42px;
-    padding-inline: 8px;
-    font-size: 11.5px;
-  }
-
   .explore-card {
     gap: clamp(6px, 0.9svh, 9px);
     padding: clamp(5px, 0.75svh, 8px);
   }
 }
 
-@media (max-width: 380px) {
-  .mobile-menu-shortcuts-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .site-header-logo {
-    top: 18px;
-    left: 18px;
-    width: 124px;
-  }
-
-  .site-shell .menu-button {
-    top: 18px;
-    right: 18px;
-    width: 50px;
-    height: 50px;
-  }
-
-  .site-shell .mobile-menu {
-    top: 78px;
-    right: 14px;
-    width: calc(100vw - 28px);
-    max-height: calc(100svh - 92px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .site-header-logo,
-  .menu-button,
-  .menu-icon span,
-  .mobile-menu-item,
-  .mobile-menu-item::before,
-  .mobile-menu-arrow {
-    transition-duration: 0.01ms;
-  }
-}
-
 /* Mobile continuous flow: keep navigation isolated and soften theme boundaries. */
 @media (max-width: 760px) {
-  .site-shell-mobile-flow .site-header {
-    height: 112px;
-    z-index: 100;
-    isolation: isolate;
-  }
-
-  .site-shell-mobile-flow .site-header::before {
-    position: absolute;
-    z-index: 0;
-    inset: 0;
-    content: "";
-    pointer-events: none;
-    background: linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0.94) 0%,
-      rgba(255, 255, 255, 0.82) 55%,
-      rgba(255, 255, 255, 0) 100%
-    );
-    -webkit-backdrop-filter: blur(16px) saturate(120%);
-    backdrop-filter: blur(16px) saturate(120%);
-    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 64%, transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 0%, #000 64%, transparent 100%);
-  }
-
-  .site-shell-mobile-flow .site-header-logo,
-  .site-shell-mobile-flow .menu-button {
-    z-index: 2;
-  }
-
-  .site-shell-mobile-flow .site-header-logo {
-    transition: none;
-  }
-
   .site-shell-mobile-flow .second-mouse,
   .site-shell-mobile-flow .third-mouse,
   .site-shell-mobile-flow .fourth-mouse,
@@ -11378,12 +10751,56 @@ button {
   }
 }
 
-/* Final mobile-flow sizing overrides. Keep these after legacy full-screen rules. */
+/* Definitive mobile flow. Legacy sections stay full-screen on desktop only. */
 @media (max-width: 760px) {
+  html:has(body.mobile-free-scroll),
+  body.mobile-free-scroll {
+    min-height: 100%;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    scroll-behavior: smooth;
+  }
+
+  body.mobile-free-scroll {
+    touch-action: pan-y;
+    overscroll-behavior-y: auto;
+  }
+
+  body.mobile-free-scroll #root,
+  .site-shell-mobile-flow,
+  .mobile-continuous-flow,
+  .mobile-theme-band,
+  .mobile-theme-band-content {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  .site-shell-mobile-flow {
+    display: block;
+    place-items: initial;
+  }
+
+  .mobile-continuous-flow {
+    position: relative;
+    display: block;
+    background: #ffffff;
+  }
+
+  .mobile-theme-band {
+    overflow-x: clip;
+  }
+
   .mobile-flow-block {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: auto;
     min-height: 0;
     overflow: visible;
     isolation: auto;
+    scroll-margin-top: 112px;
   }
 
   .mobile-flow-block + .mobile-flow-block {
@@ -11402,7 +10819,19 @@ button {
   .mobile-flow-block > .faq-section {
     position: relative;
     inset: auto;
+    width: 100%;
+    height: auto;
     min-height: 0;
+    overflow: visible;
+  }
+
+  #mobile-proposito,
+  #mobile-jornada,
+  #mobile-continuidade,
+  #mobile-historias,
+  #mobile-explore {
+    height: auto;
+    overflow: visible;
   }
 
   #mobile-proposito,
@@ -11413,12 +10842,33 @@ button {
     min-height: 0;
   }
 
+  #mobile-proposito > .second-section,
+  #mobile-jornada > .third-section,
+  #mobile-continuidade > .fourth-section,
+  #mobile-historias > .stories-section,
+  #mobile-explore > .explore-section,
   #mobile-proposito .second-stage,
   #mobile-jornada .third-stage,
   #mobile-continuidade .fourth-stage,
   #mobile-historias .stories-stage,
   #mobile-explore .explore-stage {
+    height: 100%;
+    min-height: inherit;
+    overflow: visible;
+    touch-action: pan-y;
+  }
+
+  #mobile-conversa-copy,
+  #mobile-conversa-card,
+  #mobile-quem-somos-overview,
+  #mobile-quem-somos-details,
+  #mobile-fundadores-photo,
+  #mobile-fundadores-cards,
+  #mobile-parceiro-intro,
+  #mobile-parceiro-cards {
+    height: auto;
     min-height: 0;
+    overflow: visible;
   }
 
   #mobile-conversa-copy .fifth-stage,
@@ -11464,9 +10914,929 @@ button {
     padding: clamp(24px, 6vw, 42px) 0;
   }
 
+  #mobile-fundadores-photo .founders-photo {
+    aspect-ratio: 1280 / 854;
+    height: auto;
+    min-height: 0;
+  }
+
+  #mobile-fundadores-photo .founders-photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1280 / 854;
+    object-fit: cover;
+  }
+
+  #mobile-parceiro-intro .partner-woman {
+    display: block;
+    width: min(72vw, 280px);
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: contain;
+  }
+
   #mobile-faq,
   #mobile-faq > .faq-section,
   #mobile-faq .faq-stage {
     min-height: 0;
+    height: auto;
+    overflow: visible;
+    touch-action: pan-y;
+  }
+
+  .site-shell-mobile-flow .section-nav {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) and (prefers-reduced-motion: reduce) {
+  html:has(body.mobile-free-scroll),
+  body.mobile-free-scroll {
+    scroll-behavior: auto;
+  }
+}
+
+/* Mobile reading flow: content determines section height and typography stays readable. */
+@media (max-width: 760px) {
+  .mobile-continuous-flow .mobile-scroll-reveal {
+    opacity: 0 !important;
+    transform: translate3d(0, 18px, 0) scale(0.992) !important;
+    transition:
+      opacity 620ms cubic-bezier(0.22, 1, 0.36, 1) var(--mobile-reveal-delay, 0ms),
+      transform 720ms cubic-bezier(0.22, 1, 0.36, 1) var(--mobile-reveal-delay, 0ms) !important;
+  }
+
+  .mobile-continuous-flow .mobile-scroll-reveal.mobile-scroll-reveal-visible {
+    opacity: 1 !important;
+    transform: translate3d(0, 0, 0) scale(1) !important;
+  }
+
+  .mobile-theme-transition {
+    height: clamp(56px, 16vw, 72px);
+  }
+
+  #mobile-proposito,
+  #mobile-jornada,
+  #mobile-continuidade,
+  #mobile-historias,
+  #mobile-explore,
+  #mobile-proposito > .second-section,
+  #mobile-jornada > .third-section,
+  #mobile-continuidade > .fourth-section,
+  #mobile-historias > .stories-section,
+  #mobile-explore > .explore-section,
+  #mobile-proposito .second-stage,
+  #mobile-jornada .third-stage,
+  #mobile-continuidade .fourth-stage,
+  #mobile-historias .stories-stage,
+  #mobile-explore .explore-stage {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  #mobile-proposito .second-main {
+    position: relative;
+    inset: auto;
+    display: flex;
+    width: min(94vw, 460px);
+    height: auto;
+    flex: 0 0 auto;
+    flex-direction: column;
+    margin: 0 auto;
+    padding: 112px 0 20px;
+  }
+
+  #mobile-proposito .second-stage {
+    display: flex;
+    min-height: 100svh !important;
+    flex-direction: column;
+  }
+
+  #mobile-proposito .family-photo {
+    position: relative;
+    inset: auto;
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1000 / 542;
+    object-fit: contain;
+    transform: none;
+  }
+
+  #mobile-proposito .second-content {
+    position: relative;
+    inset: auto;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 17px;
+    margin: 18px auto 0;
+  }
+
+  #mobile-proposito .second-copy-left {
+    display: contents;
+  }
+
+  #mobile-proposito .second-copy-right {
+    display: grid;
+    width: 100%;
+    order: 2;
+    justify-items: center;
+  }
+
+  #mobile-proposito .second-copy-left h1 {
+    max-width: 100%;
+    order: 1;
+    margin-bottom: 12px;
+    font-size: clamp(23px, 6.7vw, 28px) !important;
+    line-height: 1.08 !important;
+    text-wrap: balance;
+  }
+
+  #mobile-proposito .left-support {
+    display: flex;
+    width: 100%;
+    order: 3;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #mobile-proposito .left-support p {
+    max-width: 260px;
+    flex: 1 1 220px;
+    font-size: clamp(13px, 3.55vw, 14px) !important;
+    line-height: 1.35 !important;
+    text-align: left;
+  }
+
+  #mobile-proposito .second-copy-right p {
+    max-width: 430px;
+    margin-bottom: 18px;
+    font-size: clamp(15px, 4.1vw, 17px) !important;
+    line-height: 1.42 !important;
+    text-align: center;
+  }
+
+  #mobile-proposito .family-avatars img {
+    width: clamp(34px, 9.8vw, 40px);
+    height: clamp(34px, 9.8vw, 40px);
+    margin-left: -9px;
+  }
+
+  #mobile-proposito .second-copy-right button {
+    min-height: 54px;
+    height: auto;
+    padding: 13px 20px;
+    font-size: clamp(17px, 4.7vw, 19px);
+  }
+
+  .site-shell-mobile-flow #mobile-proposito .second-mouse {
+    position: relative;
+    inset: auto;
+    display: grid !important;
+    width: 44px;
+    height: 44px;
+    min-height: 44px;
+    flex: 0 0 44px;
+    margin: auto auto clamp(24px, 4svh, 36px);
+    padding: 0;
+    place-items: center;
+    transform: none;
+  }
+
+  .site-shell-mobile-flow #mobile-proposito .second-scroll-indicator,
+  .site-shell-mobile-flow #mobile-proposito .second-mouse .scroll-indicator {
+    display: block !important;
+  }
+
+  #mobile-jornada .third-stage,
+  #mobile-continuidade .fourth-stage,
+  #mobile-historias .stories-stage,
+  #mobile-explore .explore-stage {
+    box-sizing: border-box;
+    padding: 20px 0;
+  }
+
+  #mobile-jornada .third-stage {
+    padding-top: clamp(36px, 10vw, 48px);
+  }
+
+  #mobile-jornada .third-heading-block,
+  #mobile-historias .stories-heading,
+  #mobile-explore .explore-heading {
+    position: relative;
+    inset: auto;
+    width: min(90vw, 520px);
+    margin: 0 auto;
+    transform: none;
+  }
+
+  #mobile-jornada .third-heading-block h1,
+  #mobile-continuidade .method-title,
+  #mobile-historias .stories-heading h1,
+  #mobile-explore .explore-heading h1 {
+    font-size: clamp(28px, 8vw, 34px) !important;
+    line-height: 1.12 !important;
+  }
+
+  #mobile-jornada .third-heading-block p,
+  #mobile-continuidade .method-intro,
+  #mobile-continuidade .method-statement,
+  #mobile-historias .stories-copy,
+  #mobile-explore .explore-copy {
+    font-size: clamp(16px, 4.35vw, 18px) !important;
+    line-height: 1.5 !important;
+  }
+
+  #mobile-jornada .timeline-area {
+    --road-length: clamp(560px, 156vw, 650px);
+    --road-depth: clamp(54px, 15vw, 66px);
+    position: relative;
+    inset: auto;
+    width: min(94vw, 430px);
+    height: var(--road-length);
+    margin: 24px auto 0;
+    padding: 0;
+  }
+
+  #mobile-jornada .timeline-track {
+    --marker-size: clamp(38px, 10.5vw, 44px);
+    --connector-length: clamp(20px, 5.8vw, 26px);
+    position: absolute;
+    top: 0;
+    left: clamp(14px, 4.5vw, 20px);
+    display: block;
+    width: var(--road-depth);
+    height: var(--road-length);
+    aspect-ratio: auto;
+    overflow: visible;
+  }
+
+  #mobile-jornada .timeline-road {
+    position: relative;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    display: block;
+    width: var(--road-length);
+    height: var(--road-depth);
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(90deg);
+    transition: opacity 480ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  #mobile-jornada .timeline-area-visible .timeline-road {
+    opacity: 1;
+  }
+
+  #mobile-jornada .timeline-item {
+    position: absolute;
+    z-index: 5;
+    top: var(--timeline-x);
+    left: calc(100% - var(--timeline-y));
+    display: block;
+    width: 0;
+    height: 0;
+    overflow: visible;
+    transform: translate(-50%, -50%);
+  }
+
+  #mobile-jornada .timeline-marker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--marker-size);
+    height: var(--marker-size);
+    transform: translate(-50%, -50%);
+    animation-play-state: paused;
+  }
+
+  #mobile-jornada .timeline-card,
+  #mobile-jornada .timeline-card-bottom {
+    position: absolute;
+    top: 50%;
+    bottom: auto;
+    left: calc((var(--marker-size) / 2) + var(--connector-length));
+    box-sizing: border-box;
+    width: calc(min(94vw, 430px) - clamp(90px, 25vw, 108px));
+    min-height: 96px;
+    border-radius: 12px;
+    padding: 12px 15px;
+    overflow: visible;
+    transform: translateY(-50%);
+    opacity: 0;
+    animation-name: timeline-card-enter-mobile;
+    animation-play-state: paused;
+    box-shadow:
+      0 8px 18px rgba(4, 39, 71, 0.1),
+      inset 4px 0 0 var(--timeline-accent);
+  }
+
+  #mobile-jornada .timeline-connector,
+  #mobile-jornada .timeline-connector-top,
+  #mobile-jornada .timeline-connector-bottom {
+    position: absolute;
+    top: 50%;
+    right: auto;
+    bottom: auto;
+    left: calc(var(--marker-size) / 2);
+    display: block;
+    width: var(--connector-length);
+    height: 3px;
+    transform: translateY(-50%);
+    transform-origin: 0% 50%;
+    animation-name: timeline-connector-enter-mobile;
+    animation-play-state: paused;
+  }
+
+  #mobile-jornada .timeline-area-visible .timeline-marker,
+  #mobile-jornada .timeline-area-visible .timeline-card,
+  #mobile-jornada .timeline-area-visible .timeline-connector {
+    animation-play-state: running;
+  }
+
+  #mobile-jornada .timeline-card h2 {
+    margin-bottom: 5px;
+    font-size: clamp(15px, 4.25vw, 17px);
+    line-height: 1.12;
+  }
+
+  #mobile-jornada .timeline-card p {
+    font-size: clamp(12px, 3.35vw, 13.5px) !important;
+    line-height: 1.34 !important;
+  }
+
+  #mobile-continuidade .method-kicker,
+  #mobile-continuidade .method-title,
+  #mobile-continuidade .method-intro,
+  #mobile-continuidade .method-statement,
+  #mobile-continuidade .method-puzzle {
+    position: relative;
+    inset: auto;
+    width: min(90vw, 520px);
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  #mobile-continuidade .method-kicker {
+    margin-top: 0;
+    font-size: 14px;
+  }
+
+  #mobile-continuidade .method-intro {
+    margin-top: 14px;
+  }
+
+  #mobile-continuidade .method-statement {
+    margin-top: 18px;
+  }
+
+  #mobile-continuidade .method-puzzle {
+    --method-mobile-color-height: clamp(178px, 51vw, 204px);
+    --method-mobile-center-height: clamp(164px, 45vw, 184px);
+    display: grid;
+    height: auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows:
+      var(--method-mobile-color-height)
+      var(--method-mobile-center-height)
+      var(--method-mobile-color-height);
+    column-gap: 0;
+    row-gap: 0;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    border-radius: 0;
+    filter: none;
+  }
+
+  #mobile-continuidade .method-side {
+    display: contents;
+  }
+
+  #mobile-continuidade .method-piece,
+  #mobile-continuidade .method-side-right .method-piece {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: var(--method-mobile-color-height);
+    padding: 13px 14px;
+    overflow: visible;
+  }
+
+  #mobile-continuidade .method-piece-orange {
+    order: 1;
+    grid-column: 1;
+    z-index: 4;
+    border-radius: 14px 0 0 0;
+    box-shadow: 0 8px 0 #f78000;
+  }
+
+  #mobile-continuidade .method-piece-teal {
+    order: 2;
+    grid-column: 2;
+    z-index: 4;
+    border-radius: 0 14px 0 0;
+    box-shadow: 0 8px 0 #0d8f8f;
+  }
+
+  #mobile-continuidade .method-center-piece {
+    order: 3;
+    grid-column: 1 / -1;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: var(--method-mobile-center-height);
+    border-radius: 16px;
+    padding: 16px 18px;
+    overflow: visible;
+  }
+
+  #mobile-continuidade .method-piece-red {
+    order: 4;
+    grid-column: 1;
+    z-index: 4;
+    border-radius: 0 0 0 14px;
+    box-shadow: 0 -8px 0 #b53c3c;
+  }
+
+  #mobile-continuidade .method-piece-blue {
+    order: 5;
+    grid-column: 2;
+    z-index: 4;
+    border-radius: 0 0 14px 0;
+    box-shadow: 0 -8px 0 #0d4c87;
+  }
+
+  #mobile-continuidade .method-joint {
+    display: block;
+    z-index: 8;
+    width: 36px;
+    height: 36px;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  #mobile-continuidade .method-joint-orange {
+    top: var(--method-mobile-color-height);
+    left: 38%;
+    background: #f78000;
+  }
+
+  #mobile-continuidade .method-joint-blue {
+    top: calc(var(--method-mobile-color-height) + var(--method-mobile-center-height));
+    left: 62%;
+    background: #0d4c87;
+  }
+
+  #mobile-continuidade .method-center-piece::before,
+  #mobile-continuidade .method-center-piece::after {
+    display: block;
+    z-index: 8;
+    width: 36px;
+    height: 36px;
+  }
+
+  #mobile-continuidade .method-center-piece::before {
+    top: -18px;
+    left: 74%;
+    transform: translateX(-50%);
+  }
+
+  #mobile-continuidade .method-center-piece::after {
+    top: auto;
+    right: 74%;
+    bottom: -18px;
+    transform: translateX(50%);
+  }
+
+  #mobile-continuidade .method-piece-icon {
+    width: 29px;
+    height: 29px;
+  }
+
+  #mobile-continuidade .method-piece h2 {
+    margin: 8px 0 5px;
+    font-size: clamp(12px, 3.65vw, 15px);
+    line-height: 1.12;
+  }
+
+  #mobile-continuidade .method-piece p {
+    max-width: 100%;
+    font-size: clamp(11px, 3.05vw, 12.5px) !important;
+    line-height: 1.3 !important;
+  }
+
+  #mobile-continuidade .method-center-icon {
+    width: 42px;
+    height: 42px;
+  }
+
+  #mobile-continuidade .method-center-piece strong {
+    max-width: 220px;
+    margin-top: 9px;
+    font-size: clamp(15px, 4.2vw, 17px);
+  }
+
+  #mobile-continuidade .method-center-piece p {
+    max-width: 230px;
+    margin-top: 6px;
+    font-size: clamp(12px, 3.45vw, 14px) !important;
+    line-height: 1.35 !important;
+  }
+
+  #mobile-historias .feedback-carousel-shell,
+  #mobile-historias .feedback-carousel-track {
+    position: relative;
+    inset: auto;
+    width: min(90vw, 520px);
+    height: auto;
+    margin: 0 auto;
+  }
+
+  #mobile-historias .feedback-carousel-shell {
+    margin-top: 26px;
+  }
+
+  #mobile-historias .feedback-card-main {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    padding: 20px;
+    overflow: visible;
+  }
+
+  #mobile-historias .feedback-person strong {
+    font-size: 16px;
+  }
+
+  #mobile-historias .feedback-person span,
+  #mobile-historias .feedback-tag,
+  #mobile-historias .feedback-card footer span {
+    height: auto;
+    min-height: 24px;
+    font-size: 13px;
+  }
+
+  #mobile-historias .feedback-quote p {
+    font-size: clamp(17px, 4.7vw, 19px) !important;
+    line-height: 1.4 !important;
+  }
+
+  #mobile-historias .feedback-description {
+    font-size: clamp(15px, 4.1vw, 17px) !important;
+    line-height: 1.45 !important;
+  }
+
+  #mobile-historias .feedback-dots {
+    position: relative;
+    inset: auto;
+    width: max-content;
+    margin: 18px auto 0;
+    transform: none;
+  }
+
+  #mobile-explore .explore-card {
+    position: relative;
+    inset: auto;
+    display: grid;
+    box-sizing: border-box;
+    width: min(90vw, 520px);
+    height: auto;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    margin: 26px auto 0;
+    padding: 0;
+    overflow: visible;
+    background: transparent;
+  }
+
+  #mobile-explore .explore-option {
+    box-sizing: border-box;
+    min-height: 0;
+    border: 1px solid rgba(4, 255, 255, 0.42);
+    border-radius: 8px;
+    padding: 18px;
+    overflow: visible;
+    background: rgba(4, 39, 71, 0.86);
+  }
+
+  #mobile-explore .explore-option-title h2,
+  #mobile-explore .explore-option-description {
+    color: #ffffff;
+  }
+
+  #mobile-explore .explore-option-events,
+  #mobile-explore .explore-option-network {
+    padding: 18px;
+  }
+
+  #mobile-explore .explore-option-title h2 {
+    font-size: clamp(20px, 5.6vw, 23px);
+  }
+
+  #mobile-explore .explore-option-description {
+    font-size: clamp(15px, 4.1vw, 17px) !important;
+    line-height: 1.45 !important;
+  }
+
+  #mobile-explore .explore-option-meta li {
+    padding: 5px 9px;
+    font-size: 13px;
+  }
+
+  #mobile-explore .explore-option button {
+    min-height: 50px;
+    height: auto;
+    padding: 11px 14px;
+    font-size: 17px;
+  }
+
+  #mobile-conversa-copy .conversation-mobile-page,
+  #mobile-quem-somos-overview .who-mobile-page {
+    padding-top: 20px;
+    padding-bottom: 16px;
+  }
+
+  #mobile-conversa-card .conversation-mobile-page,
+  #mobile-quem-somos-details .who-mobile-page,
+  #mobile-fundadores-photo .founders-mobile-page,
+  #mobile-fundadores-cards .founders-mobile-page,
+  #mobile-parceiro-intro .partner-mobile-page,
+  #mobile-parceiro-cards .partner-mobile-page {
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+
+  #mobile-conversa-copy p,
+  #mobile-conversa-card p,
+  #mobile-quem-somos-overview p,
+  #mobile-quem-somos-details p,
+  #mobile-fundadores-photo p,
+  #mobile-fundadores-cards p,
+  #mobile-parceiro-intro p,
+  #mobile-parceiro-cards p,
+  #mobile-faq .faq-answer p {
+    font-size: clamp(16px, 4.35vw, 18px) !important;
+    line-height: 1.5 !important;
+  }
+
+  #mobile-conversa-copy h1,
+  #mobile-quem-somos-overview h1,
+  #mobile-fundadores-photo h1,
+  #mobile-parceiro-intro h1 {
+    font-size: clamp(28px, 8vw, 34px) !important;
+    line-height: 1.12 !important;
+  }
+
+  #mobile-fundadores-cards .founder-card,
+  #mobile-parceiro-cards .partner-left-card,
+  #mobile-parceiro-cards .partner-right-card,
+  #mobile-quem-somos-overview .who-info-card,
+  #mobile-quem-somos-details .who-info-card {
+    height: auto;
+    min-height: 0;
+    padding: 18px;
+    overflow: visible;
+  }
+
+  #mobile-fundadores-cards .founder-card h3,
+  #mobile-parceiro-cards h2,
+  #mobile-quem-somos-overview .who-info-card h3,
+  #mobile-quem-somos-details .who-info-card h3 {
+    font-size: clamp(18px, 5vw, 21px) !important;
+  }
+
+  #mobile-fundadores-photo .founders-heading > p:first-child,
+  #mobile-parceiro-intro .partner-heading > p:first-child,
+  #mobile-quem-somos-overview .who-heading > p:first-child,
+  #mobile-historias .stories-heading > p:first-child,
+  #mobile-explore .explore-heading > p:first-child {
+    font-size: 14px !important;
+    line-height: 1.3 !important;
+  }
+
+  #mobile-faq .faq-question {
+    min-height: 54px;
+    height: auto;
+    font-size: clamp(16px, 4.35vw, 18px);
+    line-height: 1.35;
+  }
+}
+
+@media (max-width: 760px) and (prefers-reduced-motion: reduce) {
+  .mobile-continuous-flow .mobile-scroll-reveal,
+  .mobile-continuous-flow .mobile-scroll-reveal.mobile-scroll-reveal-visible {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* Comfortable mobile rhythm after the three approved opening sections. */
+@media (max-width: 760px) {
+  #mobile-historias .stories-heading h1,
+  #mobile-conversa-copy .conversation-copy h1,
+  #mobile-quem-somos-overview .who-heading h1,
+  #mobile-fundadores-photo .founders-heading h1,
+  #mobile-parceiro-intro .partner-heading h1,
+  #mobile-explore .explore-heading h1,
+  #mobile-faq .faq-heading h1 {
+    font-size: clamp(26px, 7.2vw, 30px) !important;
+    line-height: 1.14 !important;
+  }
+
+  #mobile-quem-somos-details .who-right-block > h2 {
+    font-size: clamp(24px, 6.8vw, 28px) !important;
+    line-height: 1.16 !important;
+  }
+
+  #mobile-conversa-copy p,
+  #mobile-conversa-card p,
+  #mobile-quem-somos-overview p,
+  #mobile-quem-somos-details p,
+  #mobile-fundadores-photo p,
+  #mobile-fundadores-cards p,
+  #mobile-parceiro-intro p,
+  #mobile-parceiro-cards p,
+  #mobile-historias .stories-copy,
+  #mobile-explore .explore-copy,
+  #mobile-explore .explore-option-description,
+  #mobile-faq .faq-answer p {
+    font-size: clamp(15px, 4.05vw, 17px) !important;
+    line-height: 1.48 !important;
+  }
+
+  #mobile-historias .stories-heading > p:first-child,
+  #mobile-quem-somos-overview .who-heading > p:first-child,
+  #mobile-fundadores-photo .founders-heading > p:first-child,
+  #mobile-parceiro-intro .partner-heading > p:first-child,
+  #mobile-explore .explore-heading > p:first-child,
+  #mobile-faq .faq-heading > p:first-child {
+    font-size: clamp(13px, 3.55vw, 14px) !important;
+    line-height: 1.3 !important;
+  }
+
+  #mobile-fundadores-cards .founder-card h3,
+  #mobile-parceiro-cards h2,
+  #mobile-quem-somos-overview .who-info-card h3,
+  #mobile-quem-somos-details .who-info-card h3,
+  #mobile-conversa-card .conversation-card h2 {
+    font-size: clamp(17px, 4.7vw, 20px) !important;
+    line-height: 1.2 !important;
+  }
+
+  #mobile-historias .feedback-quote p {
+    font-size: clamp(16px, 4.35vw, 17px) !important;
+    line-height: 1.42 !important;
+  }
+
+  #mobile-historias .feedback-description {
+    font-size: clamp(15px, 4vw, 16.5px) !important;
+    line-height: 1.46 !important;
+  }
+
+  #mobile-explore .explore-option-title h2 {
+    font-size: clamp(18px, 5vw, 20px) !important;
+    line-height: 1.2 !important;
+  }
+
+  #mobile-historias .stories-stage,
+  #mobile-explore .explore-stage {
+    padding-top: 28px;
+    padding-bottom: 28px;
+  }
+
+  #mobile-historias .feedback-carousel-shell {
+    margin-top: 32px;
+  }
+
+  #mobile-historias .feedback-card-main {
+    row-gap: 16px;
+  }
+
+  #mobile-historias .feedback-dots {
+    margin-top: 24px;
+  }
+
+  #mobile-conversa-copy .conversation-mobile-page,
+  #mobile-quem-somos-overview .who-mobile-page,
+  #mobile-fundadores-photo .founders-mobile-page,
+  #mobile-parceiro-intro .partner-mobile-page {
+    padding-top: 28px;
+    padding-bottom: 20px;
+  }
+
+  #mobile-conversa-card .conversation-mobile-page,
+  #mobile-quem-somos-details .who-mobile-page,
+  #mobile-fundadores-cards .founders-mobile-page,
+  #mobile-parceiro-cards .partner-mobile-page {
+    padding-top: 20px;
+    padding-bottom: 28px;
+  }
+
+  #mobile-conversa-card .conversation-mobile-page {
+    gap: 24px;
+  }
+
+  #mobile-quem-somos-overview .who-mobile-page,
+  #mobile-quem-somos-details .who-mobile-page,
+  #mobile-fundadores-photo .founders-mobile-page,
+  #mobile-fundadores-cards .founders-mobile-page,
+  #mobile-parceiro-intro .partner-mobile-page,
+  #mobile-parceiro-cards .partner-mobile-page {
+    gap: 28px;
+  }
+
+  #mobile-quem-somos-overview .who-left-cards,
+  #mobile-fundadores-cards .founders-card-list {
+    gap: 24px;
+  }
+
+  #mobile-quem-somos-details .who-right-block > p,
+  #mobile-quem-somos-details .who-feature-card,
+  #mobile-quem-somos-details .who-chip-row {
+    margin-top: 24px;
+  }
+
+  #mobile-parceiro-cards .partner-right-card {
+    gap: 18px;
+  }
+
+  #mobile-explore .explore-card {
+    gap: 28px;
+    margin-top: 32px;
+  }
+
+  #mobile-faq .faq-card {
+    margin-top: 32px;
+  }
+
+  #mobile-faq .faq-list {
+    gap: 20px;
+  }
+
+  #mobile-faq .footer-content {
+    gap: 32px;
+  }
+}
+
+/* Final mobile section boundaries: keep approved layouts intact and separate each chapter. */
+@media (max-width: 760px) {
+  #mobile-jornada .timeline-area {
+    --road-length: clamp(620px, 160vw, 650px);
+  }
+
+  #mobile-jornada .timeline-item-rotina {
+    top: 10%;
+  }
+
+  #mobile-jornada .timeline-item-sobrecarga {
+    top: 34%;
+  }
+
+  #mobile-jornada .timeline-item-custos {
+    top: 58%;
+  }
+
+  #mobile-jornada .timeline-item-medo {
+    top: 82%;
+  }
+
+  #mobile-proposito .second-copy-right p {
+    margin-bottom: clamp(32px, 8.5vw, 36px);
+  }
+
+  #mobile-proposito .left-support {
+    margin-top: clamp(15px, 4.2vw, 18px);
+  }
+
+  #mobile-continuidade .fourth-stage {
+    padding-top: clamp(54px, 14vw, 64px);
+  }
+
+  #mobile-historias .stories-stage {
+    padding-top: clamp(58px, 15vw, 68px);
+  }
+
+  #mobile-historias .stories-heading h1 {
+    max-width: 100%;
+    font-size: clamp(22px, 6vw, 25px) !important;
+    line-height: 1.16 !important;
+    text-wrap: balance;
+  }
+
+  #mobile-historias .stories-heading h1 br {
+    display: none;
+  }
+
+  #mobile-quem-somos-overview .who-mobile-page {
+    padding-top: clamp(58px, 15vw, 68px);
+  }
+
+  #mobile-fundadores-photo .founders-mobile-page {
+    padding-top: clamp(58px, 15vw, 68px);
   }
 }

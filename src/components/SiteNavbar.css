@@ -1,0 +1,481 @@
+.ifa-navbar {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  width: 100%;
+  height: 0;
+  pointer-events: none;
+}
+
+.ifa-navbar-logo {
+  position: fixed;
+  top: clamp(36px, 5.263svh, 50px);
+  left: 6.25vw;
+  display: block;
+  width: clamp(150px, 10.104vw, 194px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 240ms cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear 240ms;
+}
+
+.ifa-navbar-logo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.ifa-navbar-logo-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
+.ifa-navbar-button {
+  position: fixed;
+  top: clamp(36px, 5.263svh, 50px);
+  right: 6.25vw;
+  display: grid;
+  width: clamp(56px, 3.646vw, 70px);
+  height: clamp(56px, 3.646vw, 70px);
+  padding: 0;
+  place-items: center;
+  border: 1px solid rgba(77, 105, 126, 0.38);
+  border-radius: 50%;
+  color: #0d8f8f;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 8px 20px rgba(4, 39, 71, 0.13), 0 2px 5px rgba(4, 39, 71, 0.08);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: border-color 220ms ease, background-color 220ms ease, box-shadow 220ms ease;
+}
+
+.ifa-navbar-icon {
+  position: relative;
+  display: block;
+  width: 42%;
+  height: 31%;
+}
+
+.ifa-navbar-icon span {
+  position: absolute;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 3px;
+  border-radius: 999px;
+  background: currentColor;
+  transform-origin: center;
+  transition: top 240ms cubic-bezier(0.22, 1, 0.36, 1), opacity 180ms ease,
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ifa-navbar-icon span:nth-child(1) { top: 0; }
+.ifa-navbar-icon span:nth-child(2) { top: calc(50% - 1.5px); }
+.ifa-navbar-icon span:nth-child(3) { top: calc(100% - 3px); }
+.ifa-navbar-button-open .ifa-navbar-icon span:nth-child(1) {
+  top: calc(50% - 1.5px);
+  transform: rotate(45deg);
+}
+.ifa-navbar-button-open .ifa-navbar-icon span:nth-child(2) { opacity: 0; }
+.ifa-navbar-button-open .ifa-navbar-icon span:nth-child(3) {
+  top: calc(50% - 1.5px);
+  transform: rotate(-45deg);
+}
+
+.ifa-navbar-button:hover {
+  border-color: rgba(13, 143, 143, 0.62);
+  background: #fff;
+  box-shadow: 0 11px 24px rgba(4, 39, 71, 0.17), 0 3px 7px rgba(4, 39, 71, 0.1);
+}
+
+.ifa-navbar-button:focus-visible {
+  outline: 3px solid rgba(13, 143, 143, 0.28);
+  outline-offset: 4px;
+}
+
+.ifa-menu-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 98;
+  border: 0;
+  padding: 0;
+  background: rgba(4, 39, 71, 0.2);
+  cursor: default;
+  backdrop-filter: blur(3px);
+}
+
+.ifa-menu-panel {
+  position: fixed;
+  top: clamp(104px, 13svh, 128px);
+  right: 6.25vw;
+  z-index: 99;
+  display: grid;
+  width: clamp(330px, 24vw, 400px);
+  max-height: calc(100svh - clamp(126px, 16svh, 154px));
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(13, 143, 143, 0.28);
+  border-radius: 8px;
+  padding: 18px;
+  color: #042747;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.99), rgba(244, 250, 249, 0.97));
+  box-shadow: 0 24px 60px rgba(4, 39, 71, 0.24), 0 5px 14px rgba(4, 39, 71, 0.11),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.ifa-menu-heading {
+  display: flex;
+  min-width: 0;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  border-bottom: 1px solid rgba(4, 39, 71, 0.11);
+  padding: 2px 2px 14px;
+}
+
+.ifa-menu-kicker,
+.ifa-menu-shortcuts-label {
+  display: block;
+  color: #0d8f8f;
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.ifa-menu-kicker { margin-bottom: 4px; }
+
+.ifa-menu-heading h2 {
+  margin: 0;
+  color: #042747;
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(20px, 1.3vw, 24px);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: 0;
+}
+
+.ifa-menu-progress {
+  flex: 0 0 auto;
+  color: #0d8f8f;
+  font-family: "Poppins", sans-serif;
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.ifa-menu-progress small {
+  color: rgba(4, 39, 71, 0.46);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.ifa-menu-list {
+  display: grid;
+  min-height: 0;
+  gap: 6px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-right: 4px;
+  scrollbar-color: rgba(13, 143, 143, 0.48) transparent;
+  scrollbar-width: thin;
+}
+
+.ifa-menu-list::-webkit-scrollbar { width: 5px; }
+.ifa-menu-list::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(13, 143, 143, 0.46);
+}
+
+.ifa-menu-item {
+  --nav-accent: #0d8f8f;
+  position: relative;
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  grid-template-columns: 34px minmax(0, 1fr) 18px;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(4, 39, 71, 0.09);
+  border-radius: 7px;
+  padding: 7px 11px 7px 9px;
+  color: #042747;
+  background: rgba(255, 255, 255, 0.7);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+}
+
+.ifa-menu-item::before {
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 0;
+  width: 3px;
+  border-radius: 0 999px 999px 0;
+  background: var(--nav-accent);
+  content: "";
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.ifa-menu-accent-0 { --nav-accent: #0d8f8f; }
+.ifa-menu-accent-1 { --nav-accent: #0d4c87; }
+.ifa-menu-accent-2 { --nav-accent: #f78000; }
+.ifa-menu-accent-3 { --nav-accent: #b53c3c; }
+
+.ifa-menu-index {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--nav-accent) 42%, transparent);
+  border-radius: 50%;
+  color: var(--nav-accent);
+  background: color-mix(in srgb, var(--nav-accent) 9%, white);
+  font-family: "Inter", sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.ifa-menu-label {
+  min-width: 0;
+  color: inherit;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.ifa-menu-arrow {
+  width: 16px;
+  height: 16px;
+  color: var(--nav-accent);
+  opacity: 0.48;
+  transition: opacity 180ms ease;
+}
+
+.ifa-menu-item:hover,
+.ifa-menu-item:focus-visible,
+.ifa-menu-item-active {
+  border-color: color-mix(in srgb, var(--nav-accent) 34%, transparent);
+  background: color-mix(in srgb, var(--nav-accent) 7%, white);
+  box-shadow: 0 5px 14px rgba(4, 39, 71, 0.07);
+}
+
+.ifa-menu-item:hover::before,
+.ifa-menu-item:focus-visible::before,
+.ifa-menu-item-active::before { opacity: 1; }
+
+.ifa-menu-item:hover .ifa-menu-arrow,
+.ifa-menu-item:focus-visible .ifa-menu-arrow,
+.ifa-menu-item-active .ifa-menu-arrow { opacity: 1; }
+
+.ifa-menu-item:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--nav-accent) 34%, transparent);
+  outline-offset: -2px;
+}
+
+.ifa-menu-item-active .ifa-menu-label { color: var(--nav-accent); }
+
+.ifa-menu-shortcuts {
+  display: grid;
+  gap: 7px;
+  border-top: 1px solid rgba(4, 39, 71, 0.11);
+  padding-top: 11px;
+}
+
+.ifa-menu-shortcuts-label {
+  color: rgba(4, 39, 71, 0.58);
+  font-size: 10px;
+}
+
+.ifa-menu-shortcuts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.ifa-menu-shortcut {
+  --shortcut-accent: #0d8f8f;
+  display: grid;
+  min-width: 0;
+  min-height: 44px;
+  grid-template-columns: 20px minmax(0, 1fr) 14px;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid color-mix(in srgb, var(--shortcut-accent) 28%, transparent);
+  border-radius: 7px;
+  padding: 8px 9px;
+  color: #042747;
+  background: color-mix(in srgb, var(--shortcut-accent) 7%, white);
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+}
+
+.ifa-menu-shortcut-events { --shortcut-accent: #f78000; }
+.ifa-menu-shortcut-partners { --shortcut-accent: #0d8f8f; }
+
+.ifa-menu-shortcut svg {
+  width: 17px;
+  height: 17px;
+  color: var(--shortcut-accent);
+}
+
+.ifa-menu-shortcut svg:last-child {
+  width: 14px;
+  height: 14px;
+  opacity: 0.56;
+}
+
+.ifa-menu-shortcut:hover,
+.ifa-menu-shortcut:focus-visible,
+.ifa-menu-shortcut-active {
+  border-color: color-mix(in srgb, var(--shortcut-accent) 48%, transparent);
+  background: color-mix(in srgb, var(--shortcut-accent) 12%, white);
+  box-shadow: 0 5px 14px rgba(4, 39, 71, 0.08);
+}
+
+.ifa-menu-shortcut:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--shortcut-accent) 38%, transparent);
+  outline-offset: 2px;
+}
+
+@media (min-width: 761px) and (max-width: 1180px) {
+  .ifa-navbar-logo {
+    top: clamp(32px, 5.263svh, 50px);
+    width: clamp(150px, 15vw, 194px);
+  }
+
+  .ifa-navbar-button {
+    top: clamp(32px, 5.263svh, 50px);
+    width: clamp(54px, 5.7vw, 70px);
+    height: clamp(54px, 5.7vw, 70px);
+  }
+
+  .ifa-menu-panel { top: clamp(98px, 13svh, 120px); }
+}
+
+@media (max-width: 760px) {
+  .ifa-navbar-flow {
+    height: 112px;
+    isolation: isolate;
+  }
+
+  .ifa-navbar-flow::before {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    content: "";
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.82) 55%, rgba(255, 255, 255, 0) 100%);
+    backdrop-filter: blur(16px) saturate(120%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 64%, transparent 100%);
+  }
+
+  .ifa-navbar-flow .ifa-navbar-logo,
+  .ifa-navbar-flow .ifa-navbar-button { z-index: 2; }
+
+  .ifa-navbar-flow .ifa-navbar-logo { transition: none; }
+
+  .ifa-navbar-logo {
+    top: 20px;
+    left: 20px;
+    width: 132px;
+  }
+
+  .ifa-navbar-button {
+    top: 20px;
+    right: 20px;
+    width: 54px;
+    height: 54px;
+  }
+
+  .ifa-menu-panel {
+    top: 84px;
+    right: 16px;
+    width: min(390px, calc(100vw - 32px));
+    max-height: calc(100svh - 100px);
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .ifa-menu-heading {
+    gap: 12px;
+    padding-bottom: 11px;
+  }
+
+  .ifa-menu-heading h2 { font-size: clamp(18px, 5.3vw, 21px); }
+  .ifa-menu-progress { font-size: 19px; }
+  .ifa-menu-list { gap: 5px; }
+
+  .ifa-menu-item {
+    min-height: 44px;
+    grid-template-columns: 31px minmax(0, 1fr) 16px;
+    gap: 9px;
+    padding-block: 6px;
+  }
+
+  .ifa-menu-index {
+    width: 28px;
+    height: 28px;
+  }
+
+  .ifa-menu-label { font-size: 13px; }
+
+  .ifa-menu-shortcuts {
+    gap: 6px;
+    padding-top: 9px;
+  }
+
+  .ifa-menu-shortcut {
+    min-height: 42px;
+    padding-inline: 8px;
+    font-size: 11.5px;
+  }
+}
+
+@media (max-width: 380px) {
+  .ifa-menu-shortcuts-grid { grid-template-columns: 1fr; }
+
+  .ifa-navbar-logo {
+    top: 18px;
+    left: 18px;
+    width: 124px;
+  }
+
+  .ifa-navbar-button {
+    top: 18px;
+    right: 18px;
+    width: 50px;
+    height: 50px;
+  }
+
+  .ifa-menu-panel {
+    top: 78px;
+    right: 14px;
+    width: calc(100vw - 28px);
+    max-height: calc(100svh - 92px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ifa-navbar-logo,
+  .ifa-navbar-button,
+  .ifa-navbar-icon span,
+  .ifa-menu-item,
+  .ifa-menu-item::before,
+  .ifa-menu-arrow { transition-duration: 0.01ms; }
+}
